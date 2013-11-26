@@ -1,0 +1,91 @@
+# depslib dependency file v1.0
+1351893396 source:g:\users\docencia\gráficos por computador (gc-gim)\prácticas\cargl\main.cpp
+	<windows.h>
+	<GLUT/glut.h>
+	<GL/glut.h>
+	<stdlib.h>
+	"load3ds.c"
+
+976659772 g:\users\docencia\gráficos por computador (gc-gim)\prácticas\cargl\glut\include\gl\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1023918422 g:\users\docencia\gráficos por computador (gc-gim)\prácticas\cargl\load3ds.c
+	<math.h>
+	<stdio.h>
+	<malloc.h>
+
+1352024675 source:i:\users\docencia\gráficos por computador (gc-gim)\prácticas\cargl\main.cpp
+	<string.h>
+	<GL/glui.h>
+
+976659772 i:\users\docencia\gráficos por computador (gc-gim)\prácticas\cargl\glut\include\gl\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1352020667 i:\users\docencia\gráficos por computador (gc-gim)\prácticas\cargl\load3ds.c
+	<math.h>
+	<stdio.h>
+	<malloc.h>
+
+1352020431 i:\users\docencia\gráficos por computador (gc-gim)\prácticas\cargl\load3ds.h
+
+1023918422 source:i:\users\docencia\gráficos por computador (gc-gim)\prácticas\cargl\load3ds.c
+	<math.h>
+	<stdio.h>
+	<malloc.h>
+
+1352062927 source:i:\users\docencia\gráficos por computador (gc-gim)\prácticas\opengl2\cargl\main.cpp
+	<string.h>
+	<GL/glui.h>
+	"Objects.h"
+
+1352064014 i:\users\docencia\gráficos por computador (gc-gim)\prácticas\opengl2\cargl\objects.h
+	<GL/glui.h>
+
+1352063867 source:i:\users\docencia\gráficos por computador (gc-gim)\prácticas\opengl2\cargl\objects.cpp
+	"Objects.h"
+	<GL/glui.h>
+	"load3ds.c"
+
+1352020667 i:\users\docencia\gráficos por computador (gc-gim)\prácticas\opengl2\cargl\load3ds.c
+	<math.h>
+	<stdio.h>
+	<malloc.h>
+
+1352110994 source:i:\users\docencia\gráficos por computador (gc-gim)\prácticas\opengl\cargl\main.cpp
+	"Objects.h"
+	<GL\glui.h>
+
+1352067580 i:\users\docencia\gráficos por computador (gc-gim)\prácticas\opengl\cargl\objects.h
+	<GL/glui.h>
+
+1352117382 source:i:\users\docencia\gráficos por computador (gc-gim)\prácticas\opengl\cargl\objects.cpp
+	"Objects.h"
+	<GL/glui.h>
+	"load3ds.c"
+
+1352020667 i:\users\docencia\gráficos por computador (gc-gim)\prácticas\opengl\cargl\load3ds.c
+	<math.h>
+	<stdio.h>
+	<malloc.h>
+
+1352121062 source:g:\dropbox\estudios\ingenieria multimedia\3r año\1r cuatrimestre\gc (graficos por computador)\practica\practica 3\cargl\main.cpp
+	"Objects.h"
+	<GL\glui.h>
+
+1352071180 g:\dropbox\estudios\ingenieria multimedia\3r año\1r cuatrimestre\gc (graficos por computador)\practica\practica 3\cargl\objects.h
+	<GL/glui.h>
+
+1352120982 source:g:\dropbox\estudios\ingenieria multimedia\3r año\1r cuatrimestre\gc (graficos por computador)\practica\practica 3\cargl\objects.cpp
+	"Objects.h"
+	<GL/glui.h>
+	"load3ds.c"
+
+1352024267 g:\dropbox\estudios\ingenieria multimedia\3r año\1r cuatrimestre\gc (graficos por computador)\practica\practica 3\cargl\load3ds.c
+	<math.h>
+	<stdio.h>
+	<malloc.h>
+
