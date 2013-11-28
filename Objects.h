@@ -15,17 +15,26 @@
 #define ObjectsH
 //---------------------------------------------------------------------------
 
-#include <GL/glui.h>
+#include <GL\glui.h>
 
 // Identificadores internos de los objetos
 #define CARRETERA_ID    10
 
 #define COCHE_ID	    100 // Un coche cada 100
 
-#define COCHE           0
+#define COCHE           0 //Estas variables se suman a coche, para así poder identificar varias partes de un objeto
 #define RUEDA	        10
 #define MARCADOR        20
-// etc...
+
+
+#define FAROLA_ID       90// Una farola cada 90
+
+#define FAROLA_BASE     0
+#define FAROLA_CAPUCHA  1
+#define FAROLA_CRISTAL  2
+
+
+
 
 // IDs para los callbacks de TGui
 #define LIGHT0_ENABLED_ID    200
@@ -49,6 +58,7 @@ public: // Atributos
 		float sx,sy,sz; 	    // Escalado del objeto
 		float rx,ry,rz;     	// Rotación del objeto
 		float rr;               // Rotación de las ruedas
+		float t_luz_z;            // Posicion Z en caso que sea una farola
 		float colores[2][4];    // Color RGB y canal Alfa
 
 public: // Métodos
@@ -72,6 +82,9 @@ public: // Atributos
         int show_car;
         int show_wheels;
         int show_road;
+
+        int show_farola_base;
+        int show_farola_capucha;
 
         GLfloat view_position[3];
         GLfloat view_rotate[16];

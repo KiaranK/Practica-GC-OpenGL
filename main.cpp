@@ -139,6 +139,7 @@ int main(int argc, char* argv[])
     TPrimitiva *road = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
     TPrimitiva *car1 = new TPrimitiva(COCHE_ID*1, COCHE_ID);
     TPrimitiva *car2 = new TPrimitiva(COCHE_ID*2, COCHE_ID);
+    TPrimitiva *farola1 = new TPrimitiva(FAROLA_ID*1, FAROLA_ID);
 
     //cambiamos características de los coches
     car2->colores[0][0] = 0.3;
@@ -149,6 +150,7 @@ int main(int argc, char* argv[])
     car2->tz = -3;
 
     escena.AddObject(road);
+    escena.AddObject(farola1);
     escena.AddCar(car1);
     escena.AddCar(car2);
 

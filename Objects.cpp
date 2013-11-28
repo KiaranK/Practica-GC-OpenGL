@@ -11,7 +11,7 @@
 ****************************************************************************/
 
 
-#include "Objects.h"d
+#include "Objects.h"
 #include <GL/glui.h>
 
 #include "load3ds.c"
@@ -34,9 +34,10 @@ GLfloat high_shininess_c[1] = { 100.0f };
 
 // Matriz de 4x4 = (I)
 float view_rotate_c[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
-float view_position_c[3] = { 0.0, -2.0, -9.0 };
+float view_position_c[3] = { 0.0, -2.0, -15.0 };
 
-float colores_c[2][4] = { {0.8, 0.5, 0.0, 1.0}, {0.5, 0.5, 0.5, 1.0}};
+float colores_c[2][4] = { {0.8, 0.5, 0.0, 1.0}, {0.5, 0.5, 0.5, 1.0}}; //Coche, rueda
+float colores_farola[3][4] = {{0.75, 0.75, 0.75, 1.0},{0.5, 0.5, 0.5, 1.0},{1.0, 1.0, 1.0, 1.0}}; //Base, capucha, y cristal de la farola
 
 //************************************************************** Variables de clase
 
@@ -77,7 +78,7 @@ TPrimitiva::TPrimitiva(int DL, int t)
                         //ORDEN  de vertices, SENTIDO ANTIHORARIO
                         glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
                         glColor4f(1.0, 1.0, 1.0, 1.0);
-                        glVertex3f( 0.1, 0.01, -10+i*4);
+                        glVertex3f( 0.1, 0.01, -10+i*4); //x,y,z
                         glVertex3f(-0.1, 0.01, -10+i*4);
                         glVertex3f(-0.1, 0.01,  -8+i*4);
                         glVertex3f( 0.1, 0.01,  -8+i*4);
@@ -133,6 +134,73 @@ TPrimitiva::TPrimitiva(int DL, int t)
 
             // Liberamos la memoria una vez creada la Display List,
             free(modelo);
+            break;
+		}
+
+		/********************************************** FAROLA */
+		case FAROLA_ID: {
+
+		    tx = 5;
+		    ty = 0;
+		    tz = 2;
+		    rx = -90;
+		    ry = 0;
+            rz = 90;
+
+            //************************ Cargar modelos ***********************************
+            int num_vertices = 0;
+
+            float* modelo = Load3DS("../../Modelos/farola_base.3ds", &num_vertices);
+
+            glNewList(ID+FAROLA_BASE, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        // << 3 = * 8
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+
+            num_vertices = 0;
+            modelo = Load3DS("../../Modelos/farola_capucha.3ds", &num_vertices);
+
+            glNewList(ID+FAROLA_CAPUCHA, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+
+            num_vertices = 0;
+            modelo = Load3DS("../../Modelos/farola_cristal.3ds", &num_vertices);
+
+            glNewList(ID+FAROLA_CRISTAL, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+            break;
 		}
 	} // fin del case
 }
@@ -202,9 +270,46 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             glPopMatrix();
             break;
         }
-    }
 
+        /************************* FAROLA */
+        case FAROLA_ID: {
+
+            glPushMatrix();
+
+            // Traslación del objeto FAROLA
+            glTranslated(tx, ty, tz);
+            glRotated(rx, 1, 0, 0);
+            glRotated(ry, 0, 1, 0);
+            glRotated(rz, 0, 0, 1);
+
+            if (escena.show_farola_base)
+            {
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glColor4fv(colores_farola[0]);
+                glLoadName(0);
+                glCallList(ID+FAROLA_BASE);
+            }
+
+            if (escena.show_farola_capucha)
+            {
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glColor4fv(colores_farola[1]);
+                glLoadName(0);
+                glCallList(ID+FAROLA_CAPUCHA);
+
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glColor4fv(colores_farola[2]);
+                glLoadName(0);
+                glCallList(ID+FAROLA_CRISTAL);
+            }
+            glPopMatrix();
+            break;
+        }
+    }
 }
+
+
+
 
 //************************************************************** Clase TEscena
 
@@ -217,6 +322,9 @@ TEscena::TEscena() {
     show_car = 1;
     show_wheels = 1;
     show_road = 1;
+
+    show_farola_base = 1;
+    show_farola_capucha = 1;
 
     // live variables usadas por GLUI en TGui
     wireframe = 0;
@@ -361,10 +469,10 @@ void __fastcall TEscena::Render()
     glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
     glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
 
-    // Dibujar coches
+    // Dibujar carretera y objetos
     RenderObjects(seleccion);
 
-    // Dibujar carretera y objetos
+    // Dibujar coches
     RenderCars(seleccion);
 
     glutSwapBuffers();  //Intercambia buffers (recordar que estamos usando doble buffer)
@@ -520,6 +628,9 @@ void __fastcall TGui::Init(int main_window) {
     new GLUI_Checkbox( options, "Dibujar Ruedas", &escena.show_wheels );
     new GLUI_Checkbox( options, "Dibujar Carretera", &escena.show_road );
 
+    new GLUI_Checkbox( options, "Dibujar Farolas", &escena.show_farola_base );
+    new GLUI_Checkbox( options, "Dibujar Farolas (cap)", &escena.show_farola_capucha );
+
 
     /*** Disable/Enable botones ***/
     // Añade una separación
@@ -538,7 +649,7 @@ void __fastcall TGui::Init(int main_window) {
     // Añade una separación
     new GLUI_StaticText( glui, "" );
 
-    new GLUI_StaticText( glui, "Autor: Juan Puchol (C) 2012" );
+    new GLUI_StaticText( glui, "Autor: Alex Jover 2013" );
 
     // Añade una separación
     new GLUI_StaticText( glui, "" );
