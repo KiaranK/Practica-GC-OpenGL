@@ -59,14 +59,42 @@ static void SpecialKey(int key, int x, int y)
         switch (key)
         {
             case GLUT_KEY_UP:   // El coche avanza
-                car->rr+=8;         //Rotamos rueda
-                car->tz += 0.05;    //Avanzamos coche
+                car->v += 5;
                 break;
             case GLUT_KEY_DOWN:   // El coche retrocede
-                car->rr-=8;
-                car->tz -= 0.05;
+                car->v -= 5;
+                break;
+
+            case GLUT_KEY_LEFT:   // Giramos ruedas
+                if(car->anguloRuedas < 24)
+                    car->anguloRuedas += 4;
+                break;
+            case GLUT_KEY_RIGHT:
+                if(car->anguloRuedas > -24)
+                    car->anguloRuedas -= 4;
                 break;
         }
+
+        /*switch (key)
+        {
+            case GLUT_KEY_UP:   // El coche avanza
+                car->rr+=20;         //Rotamos rueda
+                car->tz += 0.15;    //Avanzamos coche
+                break;
+            case GLUT_KEY_DOWN:   // El coche retrocede
+                car->rr-=20;
+                car->tz -= 0.15;
+                break;
+
+            case GLUT_KEY_LEFT:   // Giramos ruedas
+                if(car->anguloRuedas < 25)
+                    car->anguloRuedas += 1;
+                break;
+            case GLUT_KEY_RIGHT:
+                if(car->anguloRuedas > -25)
+                    car->anguloRuedas -= 1;
+                break;
+        }*/
 
         glutPostRedisplay();
 
@@ -136,23 +164,142 @@ int main(int argc, char* argv[])
     GLUI_Master.set_glutIdleFunc( Idle );
 
     // Crea los objetos
-    TPrimitiva *road = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *suelo = new TPrimitiva(SUELO_ID, SUELO_ID);
+
+    TPrimitiva *carrLarga1 = new TPrimitiva(CARRETERA_LARGA_ID, CARRETERA_LARGA_ID);
+    TPrimitiva *carrCorta1 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta2 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+
+    TPrimitiva *casa0 = new TPrimitiva(CASA_ID, CASA_ID);
+	TPrimitiva *casa1 = new TPrimitiva(CASA_ID, CASA_ID);
+	TPrimitiva *casa2 = new TPrimitiva(CASA_ID, CASA_ID);
+
     TPrimitiva *car1 = new TPrimitiva(COCHE_ID*1, COCHE_ID);
-    TPrimitiva *car2 = new TPrimitiva(COCHE_ID*2, COCHE_ID);
-    TPrimitiva *farola1 = new TPrimitiva(FAROLA_ID*1, FAROLA_ID);
 
-    //cambiamos características de los coches
-    car2->colores[0][0] = 0.3;
-    car2->colores[0][1] = 0.8;
-    car2->colores[0][2] = 0.4;
-    car2->colores[0][3] = 1.0;
-    car2->tx = 2;
-    car2->tz = -3;
+	TPrimitiva *farola0 = new TPrimitiva(FAROLA_ID, FAROLA_ID);
+	TPrimitiva *farola1 = new TPrimitiva(FAROLA_ID, FAROLA_ID);
+	TPrimitiva *farola2 = new TPrimitiva(FAROLA_ID, FAROLA_ID);
+	TPrimitiva *farola3 = new TPrimitiva(FAROLA_ID, FAROLA_ID);
+	TPrimitiva *farola4 = new TPrimitiva(FAROLA_ID, FAROLA_ID);
+	TPrimitiva *farola5 = new TPrimitiva(FAROLA_ID, FAROLA_ID);
+	TPrimitiva *farola6 = new TPrimitiva(FAROLA_ID, FAROLA_ID);
 
-    escena.AddObject(road);
+	TPrimitiva *farola_calle0 = new TPrimitiva(FAROLA_ID, FAROLA_ID);
+	TPrimitiva *farola_calle1 = new TPrimitiva(FAROLA_ID, FAROLA_ID);
+
+	TPrimitiva *farola_calle2 = new TPrimitiva(FAROLA_ID, FAROLA_ID); //Otra calle
+
+	TPrimitiva *ladera_baja0 = new TPrimitiva(LADERA_BAJA_ID, LADERA_BAJA_ID);
+	TPrimitiva *ladera_baja1 = new TPrimitiva(LADERA_BAJA_ID, LADERA_BAJA_ID);
+
+	TPrimitiva *ladera_alta0 = new TPrimitiva(LADERA_ALTA_ID, LADERA_ALTA_ID);
+	TPrimitiva *ladera_alta1 = new TPrimitiva(LADERA_ALTA_ID, LADERA_ALTA_ID);
+
+
+//POSICIONES
+
+    ladera_alta0->tx = 90;
+    ladera_alta0->tz = -110;
+
+    ladera_alta1->tx = -150;
+    ladera_alta1->tz = 200;
+
+    ladera_baja0->tx = -60;
+    ladera_baja0->tz = -75;
+
+    ladera_baja1->tx = 65;
+    ladera_baja1->tz = 65;
+
+    carrCorta1->tx = 35;
+    carrCorta1->tz = 25;
+    carrCorta1->rz = 0;
+
+    carrCorta2->tx = -35;
+    carrCorta2->tz = -25;
+    carrCorta2->rz = 0;
+
+
+    //Farolas (carretera principal)
+    farola0->tx = -10;
+    farola0->tz = -50*3;
+    farola0->rz = -90;
+
+	farola1->tx = 10;
+    farola1->tz = -50*2;
+    farola1->rz = 90;
+
+    farola2->tx = -10;
+    farola2->tz = -50*1;
+    farola2->rz = -90;
+
+    farola3->tx = 10;
+    farola3->tz = 50*0;
+    farola3->rz = 90;
+
+    farola4->tx = -10;
+    farola4->tz = 50*1;
+    farola4->rz = -90;
+
+    farola5->tx = 10;
+    farola5->tz = 50*2;
+    farola5->rz = 90;
+
+    farola6->tx = -10;
+    farola6->tz = 50*3;
+    farola6->rz = -90;
+
+    //Farolas calles laterales
+    farola_calle0->tx = 45*1;
+    farola_calle0->tz = 28;
+    farola_calle0->rz = 180;
+
+    farola_calle1->tx = 45*2;
+    farola_calle1->tz = 48;
+    farola_calle1->rz = 0;
+
+    farola_calle2->tx = -60;
+    farola_calle2->tz = -49;
+    farola_calle2->rz = 180;
+
+    casa0->tx = -73;
+    casa0->tz = -25;
+    casa0->ry = 90;
+
+    casa1->tx = 14;
+    casa1->tz = 100;
+    casa1->ry = -90;
+
+    casa2->tx = 65;
+    casa2->tz = 10;
+
+//Añadimos objetos
+    escena.AddObject(suelo);
+
+    escena.AddObject(carrLarga1);
+    escena.AddObject(carrCorta1);
+    escena.AddObject(carrCorta2);
+
+    escena.AddObject(casa0);
+    escena.AddObject(casa1);
+    escena.AddObject(casa2);
+
+    escena.AddObject(farola0);
     escena.AddObject(farola1);
+    escena.AddObject(farola2);
+    escena.AddObject(farola3);
+    escena.AddObject(farola4);
+    escena.AddObject(farola5);
+    escena.AddObject(farola6);
+    escena.AddObject(farola_calle0);
+    escena.AddObject(farola_calle1);
+    escena.AddObject(farola_calle2);
+
+    escena.AddObject(ladera_baja0);
+    escena.AddObject(ladera_baja1);
+    escena.AddObject(ladera_alta0);
+    escena.AddObject(ladera_alta1);
+
     escena.AddCar(car1);
-    escena.AddCar(car2);
 
     /**** Regular GLUT main loop ****/
     glutMainLoop();

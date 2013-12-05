@@ -15,6 +15,12 @@
 #include <GL/glui.h>
 
 #include "load3ds.c"
+#include "loadjpeg.c"
+
+unsigned char *dataTextura;
+int tex_width;
+int tex_height;
+GLuint texturas[5];
 
 // Variable para inicializar los vectores correpondientes con los valores iniciales
 GLfloat light0_ambient_c[4]  = {   0.2f, 0.2f, 0.2f, 1.0f };
@@ -36,8 +42,18 @@ GLfloat high_shininess_c[1] = { 100.0f };
 float view_rotate_c[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float view_position_c[3] = { 0.0, -2.0, -15.0 };
 
+
+//MATERIALES
+float color_suelo[4] = {0.15,1,0.15, 1};
 float colores_c[2][4] = { {0.8, 0.5, 0.0, 1.0}, {0.5, 0.5, 0.5, 1.0}}; //Coche, rueda
 float colores_farola[3][4] = {{0.75, 0.75, 0.75, 1.0},{0.5, 0.5, 0.5, 1.0},{1.0, 1.0, 1.0, 1.0}}; //Base, capucha, y cristal de la farola
+float colores_carr[4] = {0.95,0.8,0.9, 0.4};
+float colores_casa[4][4] = {
+                                {1.0 , 1.0, 1.0, 1.0},      //Casa
+                                {1.0, 0.15, 0.0, 1.0},      //Tejado
+                                {0.93, 0.65, 0.05, 1.0},    //Puerta y Ventanas
+                                {0.93, 0.8, 0.25, 1.0}      //Entrada
+                            };
 
 //************************************************************** Variables de clase
 
@@ -55,55 +71,122 @@ TPrimitiva::TPrimitiva(int DL, int t)
     //Inicializamos valores de rotacion y escalado para que no pete
     sx = sy = sz = 1;
     rx = ry = rz = 0;
+    anguloRuedas = 0;
 
 	switch (tipo) {
-		case CARRETERA_ID: {  // Creación de la carretera
+	    case SUELO_ID: {  // Creación de la carretera
 		    tx = ty = tz = 0;
             glNewList(ID, GL_COMPILE);
                 glBegin(GL_QUADS);
-                    // La perpendicular al suelo es el eje Y. SIEMPRE HAY QUE INDICARLE LA NORMAL (OpenGL toma por defecto el eje Z)
+                    // La perpendicular al suelo es el eje Y
                     glNormal3f(0.0, 1.0, 0.0);
-
-                    // Color ambas caras, ambiente y difuso
+                    glColor4fv(color_suelo);
                     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                    glColor4f(0.1, 0.1, 0.1, 1.0);
-                    glVertex3f( 3.7, 0, -10);
-                    glVertex3f(-3.7, 0, -10);
-                    glVertex3f(-3.7, 0,  10);
-                    glVertex3f( 3.7, 0,  10);
-
-                    // Crea las líneas
-                    for (int i=0;i <5;i++)
-                    {
-                        //ORDEN  de vertices, SENTIDO ANTIHORARIO
-                        glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                        glColor4f(1.0, 1.0, 1.0, 1.0);
-                        glVertex3f( 0.1, 0.01, -10+i*4); //x,y,z
-                        glVertex3f(-0.1, 0.01, -10+i*4);
-                        glVertex3f(-0.1, 0.01,  -8+i*4);
-                        glVertex3f( 0.1, 0.01,  -8+i*4);
-                    }
+                    glVertex3f( 1000, -0.001, -1000);
+                    glVertex3f(-1000, -0.001, -1000);
+                    glVertex3f(-1000, -0.001,  1000);
+                    glVertex3f( 1000, -0.001,  1000);
 
                 glEnd();
             glEndList();
             break;
 		}
-		case COCHE_ID: { // Creación del coche
 
-		    tx = -2;
+
+		case CARRETERA_ID: {  // Creación de la carretera
+		    tx = 0;
 		    ty = 0;
 		    tz = 0;
-		    rr = 0;
+		    rx = -90;
+		    ry = 0;
+            rz = 90;
 
-            //copia 8 floats (8 * sizeof(float))
-		    memcpy(colores, colores_c, 8*sizeof(float));
+            int num_vertices = 0;
 
+            float* modelo = Load3DS("../../Modelos/carretera_recta.3ds", &num_vertices);
+
+            glNewList(ID, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        // << 3 = * 8
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+
+            break;
+		}
+
+
+		case CARRETERA_LARGA_ID: {  // Creación de la carretera
+		    tx = 0;
+		    ty = 0;
+		    tz = 0;
+		    rx = -90;
+		    ry = 0;
+            rz = 90;
+
+            int num_vertices = 0;
+
+            float* modelo = Load3DS("../../Modelos/carretera_larga.3ds", &num_vertices);
+
+            glNewList(ID, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        // << 3 = * 8
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+
+            break;
+		}
+
+
+		case COCHE_ID: { // Creación del coche
+
+            tx = 0;
+		    ty = 0.2;
+		    tz = 0;
             //************************ Cargar modelos ***********************************
             int num_vertices = 0;
 
-            float* modelo = Load3DS("../../Modelos/beetle.3ds", &num_vertices);
+            float* modelo = Load3DS("../../Modelos/coche.3ds", &num_vertices);
 
-            glNewList(ID+COCHE, GL_COMPILE);
+            glNewList(COCHE_ID, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        // << 3 = * 8
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+
+
+            //************************ Cargar modelos ***********************************
+            num_vertices = 0;
+
+            modelo = Load3DS("../../Modelos/rueda.3ds", &num_vertices);
+
+            glNewList(COCHE_ID+RUEDA, GL_COMPILE);
                 glBegin(GL_TRIANGLES);
                     for (int i = 0; i < num_vertices; i++)
                     {
@@ -119,12 +202,14 @@ TPrimitiva::TPrimitiva(int DL, int t)
             free(modelo);
 
             num_vertices = 0;
-            modelo = Load3DS("../../Modelos/rueda.3ds", &num_vertices);
 
-            glNewList(ID+RUEDA, GL_COMPILE);
+            modelo = Load3DS("../../Modelos/coche_marcador.3ds", &num_vertices);
+
+            glNewList(COCHE_ID+MARCADOR, GL_COMPILE);
                 glBegin(GL_TRIANGLES);
                     for (int i = 0; i < num_vertices; i++)
                     {
+                        // << 3 = * 8
                         glNormal3fv((float*) & modelo[i << 3] + 3);
                         glTexCoord2fv((float*) & modelo[i << 3] + 6);
                         glVertex3fv((float*) & modelo[i << 3]);
@@ -134,18 +219,18 @@ TPrimitiva::TPrimitiva(int DL, int t)
 
             // Liberamos la memoria una vez creada la Display List,
             free(modelo);
+
             break;
 		}
 
 		/********************************************** FAROLA */
 		case FAROLA_ID: {
 
-		    tx = 5;
+		    tx = 10;
 		    ty = 0;
-		    tz = 2;
+		    tz = 1;
 		    rx = -90;
-		    ry = 0;
-            rz = 90;
+            sx = sy = sz = 0.67;
 
             //************************ Cargar modelos ***********************************
             int num_vertices = 0;
@@ -202,6 +287,161 @@ TPrimitiva::TPrimitiva(int DL, int t)
             free(modelo);
             break;
 		}
+
+		case CASA_ID: { // Creación del coche
+
+            tx = ty = tz = 0;
+
+            //************************ Cargar modelos ***********************************
+            int num_vertices = 0;
+
+            float* modelo = Load3DS("../../Modelos/casa_base.3ds", &num_vertices);
+
+            glNewList(CASA_ID+CASA_BASE, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        // << 3 = * 8
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+
+            num_vertices = 0;
+            modelo = Load3DS("../../Modelos/casa_tejado.3ds", &num_vertices);
+
+            glNewList(CASA_ID+CASA_TEJADO, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        // << 3 = * 8
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+
+            num_vertices = 0;
+            modelo = Load3DS("../../Modelos/casa_ventanas.3ds", &num_vertices);
+
+            glNewList(CASA_ID+CASA_VENTANAS, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        // << 3 = * 8
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+
+            num_vertices = 0;
+            modelo = Load3DS("../../Modelos/casa_puerta.3ds", &num_vertices);
+
+            glNewList(CASA_ID+CASA_PUERTA, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        // << 3 = * 8
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+
+
+            num_vertices = 0;
+            modelo = Load3DS("../../Modelos/casa_entrada.3ds", &num_vertices);
+
+            glNewList(CASA_ID+CASA_ENTRADA, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        // << 3 = * 8
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+
+            break;
+		}
+
+		case LADERA_BAJA_ID: {  // Creación de la carretera
+		    tx = tz = 0;
+		    ty = -1.5;
+		    sx = sy = sz = 3;
+
+            int num_vertices = 0;
+
+            float* modelo = Load3DS("../../Modelos/ladera_baja.3ds", &num_vertices);
+
+            glNewList(ID, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        // << 3 = * 8
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+
+            break;
+		}
+
+		case LADERA_ALTA_ID: {  // Creación de la carretera
+		    tx = tz = 0;
+		    ty = -1.5;
+		    sx = sy = sz = 3.7;
+
+            int num_vertices = 0;
+
+            float* modelo = Load3DS("../../Modelos/ladera_alta.3ds", &num_vertices);
+
+            glNewList(ID, GL_COMPILE);
+                glBegin(GL_TRIANGLES);
+                    for (int i = 0; i < num_vertices; i++)
+                    {
+                        // << 3 = * 8
+                        glNormal3fv((float*) & modelo[i << 3] + 3);
+                        glTexCoord2fv((float*) & modelo[i << 3] + 6);
+                        glVertex3fv((float*) & modelo[i << 3]);
+                    }
+                glEnd();
+            glEndList();
+
+            // Liberamos la memoria una vez creada la Display List,
+            free(modelo);
+
+            break;
+		}
+
 	} // fin del case
 }
 
@@ -209,59 +449,143 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 {
     switch (tipo) {
 
-        case CARRETERA_ID: {
-            if (escena.show_road) { // Booleano asociado al interfaz
-                glPushMatrix();
-                glLoadName(0);  // No seleccionable
-                glCallList(ID);
-                glPopMatrix();
-            }
+        case SUELO_ID: {
+            glPushMatrix();
+            glLoadName(0);  // No seleccionable
+            glCallList(ID);
+            glPopMatrix();
+
             break;
         }
+
+
+        case CARRETERA_ID: {
+
+            glPushMatrix();
+            glTranslated(tx, ty, tz);
+            glRotated(rx, 1, 0, 0);
+            glRotated(ry, 0, 1, 0);
+            glRotated(rz, 0, 0, 1);
+
+            if (escena.show_road)
+            {
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glColor4fv(colores_carr);
+
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, texturas[0]);
+                glLoadName(0); //No seleccionable
+                glCallList(ID);
+                glDisable(GL_TEXTURE_2D);
+            }
+
+            glPopMatrix();
+            break;
+        }
+
+        case CARRETERA_LARGA_ID: {
+
+            glPushMatrix();
+            glTranslated(tx, ty, tz);
+            glRotated(rx, 1, 0, 0);
+            glRotated(ry, 0, 1, 0);
+            glRotated(rz, 0, 0, 1);
+
+            if (escena.show_road)
+            {
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glColor4fv(colores_carr);
+
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, texturas[0]);
+                glLoadName(0); //No seleccionable
+                glCallList(ID);
+                glDisable(GL_TEXTURE_2D);
+            }
+
+            glPopMatrix();
+            break;
+        }
+
+
         case COCHE_ID: {
 
             glPushMatrix();
 
-            // Traslación del coche y ruedas GENERAL
             glTranslated(tx, ty, tz);
+            glRotated(rx, 1, 0, 0);
+            glRotated(ry, 0, 1, 0);
+            glRotated(rz, 0, 0, 1);
+
+            //velocidad del coche
+
+            if( v != 0)
+            {
+                tx += v;
+                rr += v*20;
+            }
+            else if( v > 0)
+            {
+                v -= 0.5;
+
+                if(v < 0)
+                    v=0;
+            }
+            else if(v < 0)
+            {
+                v += 0.5;
+            }
+
 
             if (escena.show_car)
             {
+
                 glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glColor4fv(colores[0]);
+                glColor4fv(colores_c[0]);
                 glLoadName(ID);
-                glCallList(ID+COCHE);
+                glCallList(ID);
+
+                if(seleccion==ID)
+                {
+                    glPushMatrix();
+                    glTranslated(0, -0.17, 1.27);
+                    glColor4f(0.0,0.0,1.0,0.9);
+                    glCallList(ID+MARCADOR);
+                    glPopMatrix();
+                }
             }
 
             if (escena.show_wheels)
             {
                 glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glColor4fv(colores [1]);
-                glPushMatrix();
-                    glTranslated(0.9, 0.45, 1.55);
+                glColor4fv(colores_c[1]);
+                glPushMatrix();                     //Rueda 0 DEL, DER
+                    glTranslated(-1.18, 0.49, 4.04);
+                    glRotated(anguloRuedas, 0, 1 ,0);
                     glRotated(rr, 1, 0 ,0);
-                    glRotated(180, 0, 0, 1);
+                   // glRotated(180, 0, 0, 1);
                     glLoadName(ID);
                     glCallList(ID+RUEDA);
                 glPopMatrix();
 
-                glPushMatrix();
-                    glTranslated(-0.9, 0.45, 1.55);
+                glPushMatrix();                     //Rueda 1 DEL, IZQ
+                    glTranslated(1.18, 0.49, 4.04);
+                    glRotated(anguloRuedas, 0, 1 ,0);
                     glRotated(rr, 1, 0 ,0);
                     glLoadName(ID);
                     glCallList(ID+RUEDA);
                 glPopMatrix();
 
-                glPushMatrix();
-                    glTranslated(0.9, 0.45, -1.65);
+                glPushMatrix();                     //Rueda 2 DER, DEL
+                    glTranslated(-1.18, 0.49, -1.21);
                     glRotated(rr, 1, 0 ,0);
-                    glRotated(180, 0, 0, 1);
+                    //glRotated(180, 0, 0, 1);
                     glLoadName(ID);
                     glCallList(ID+RUEDA);
                 glPopMatrix();
 
-                glPushMatrix();
-                    glTranslated(-0.9, 0.45, -1.65);
+                glPushMatrix();                     //Rueda 3 DER, TRAS
+                    glTranslated(1.18, 0.49, -1.21);
                     glRotated(rr, 1, 0 ,0);
                     glLoadName(ID);
                     glCallList(ID+RUEDA);
@@ -277,6 +601,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             glPushMatrix();
 
             // Traslación del objeto FAROLA
+            glScaled(sx,sy,sz);
             glTranslated(tx, ty, tz);
             glRotated(rx, 1, 0, 0);
             glRotated(ry, 0, 1, 0);
@@ -305,6 +630,86 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             glPopMatrix();
             break;
         }
+
+        case CASA_ID: {
+
+            glPushMatrix();
+
+            // Traslación del objeto CASA
+            glScaled(sx,sy,sz);
+            glTranslated(tx, ty, tz);
+            glRotated(rx, 1, 0, 0);
+            glRotated(ry, 0, 1, 0);
+            glRotated(rz, 0, 0, 1);
+
+            if (escena.show_casa)
+            {
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glColor4fv(colores_casa[0]);
+                glLoadName(0);
+                glCallList(ID+CASA_BASE);
+
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glColor4fv(colores_casa[1]);
+                glLoadName(0);
+                glCallList(ID+CASA_TEJADO);
+
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glColor4fv(colores_casa[2]);
+                glLoadName(0);
+                glCallList(ID+CASA_VENTANAS);
+
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glColor4fv(colores_casa[2]);
+                glLoadName(0);
+                glCallList(ID+CASA_PUERTA);
+
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glColor4fv(colores_casa[3]);
+                glLoadName(0);
+                glCallList(ID+CASA_ENTRADA);
+            }
+            glPopMatrix();
+            break;
+        }
+
+        case LADERA_ALTA_ID: {
+
+            glPushMatrix();
+            glTranslated(tx, ty, tz);
+            glScaled(sx,sy,sz);
+            glRotated(rx, 1, 0, 0);
+            glRotated(ry, 0, 1, 0);
+            glRotated(rz, 0, 0, 1);
+
+            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+            glColor4fv(color_suelo);
+
+            glLoadName(0); //No seleccionable
+            glCallList(ID);
+
+            glPopMatrix();
+            break;
+        }
+
+        case LADERA_BAJA_ID: {
+
+            glPushMatrix();
+            glTranslated(tx, ty, tz);
+            glScaled(sx,sy,sz);
+            glRotated(rx, 1, 0, 0);
+            glRotated(ry, 0, 1, 0);
+            glRotated(rz, 0, 0, 1);
+
+            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+            glColor4fv(color_suelo);
+
+            glLoadName(0); //No seleccionable
+            glCallList(ID);
+
+            glPopMatrix();
+            break;
+        }
     }
 }
 
@@ -325,6 +730,8 @@ TEscena::TEscena() {
 
     show_farola_base = 1;
     show_farola_capucha = 1;
+
+    show_casa = 1;
 
     // live variables usadas por GLUI en TGui
     wireframe = 0;
@@ -372,7 +779,7 @@ void __fastcall TEscena::InitGL()
 
     glEnable(GL_LIGHTING);
     glEnable(GL_NORMALIZE);
-    glShadeModel(GL_SMOOTH);
+    glShadeModel(GL_SMOOTH); //o GL_FLAT
 
     glEnable(GL_LIGHT0);
     glLightfv(GL_LIGHT0, GL_AMBIENT,  light0_ambient);
@@ -395,6 +802,20 @@ void __fastcall TEscena::InitGL()
     // Habilita el z_buffer
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
+
+
+    //TEXTURAS
+    //CAMINO
+    dataTextura = LoadJPEG("../../Texturas/camino.jpg", &tex_width, &tex_height);
+    glGenTextures(1 ,&texturas[0]);
+    glBindTexture( GL_TEXTURE_2D, texturas[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, tex_width, tex_height, 0, GL_RGBA,GL_UNSIGNED_BYTE, dataTextura);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_NEAREST);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+
 }
 
 
@@ -631,6 +1052,7 @@ void __fastcall TGui::Init(int main_window) {
     new GLUI_Checkbox( options, "Dibujar Farolas", &escena.show_farola_base );
     new GLUI_Checkbox( options, "Dibujar Farolas (cap)", &escena.show_farola_capucha );
 
+    new GLUI_Checkbox( options, "Dibujar Casas", &escena.show_casa );
 
     /*** Disable/Enable botones ***/
     // Añade una separación
