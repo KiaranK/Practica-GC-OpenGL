@@ -59,10 +59,10 @@ static void SpecialKey(int key, int x, int y)
         switch (key)
         {
             case GLUT_KEY_UP:   // El coche avanza
-                car->v += 0.2;
+                car->v += 5;
                 break;
             case GLUT_KEY_DOWN:   // El coche retrocede
-                car->v -= 0.2;
+                car->v -= 5;
                 break;
 
             case GLUT_KEY_LEFT:   // Giramos ruedas
@@ -197,7 +197,6 @@ int main(int argc, char* argv[])
 
 
 //POSICIONES
-    car1->ry = 0;
 
     ladera_alta0->tx = 90;
     ladera_alta0->tz = -110;

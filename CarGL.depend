@@ -89,13 +89,13 @@
 	<stdio.h>
 	<malloc.h>
 
-1386268960 source:g:\dropbox\github\gc_practica_open_gl\objects.cpp
+1386236228 source:g:\dropbox\github\gc_practica_open_gl\objects.cpp
 	"Objects.h"
 	<GL/glui.h>
 	"load3ds.c"
 	"loadjpeg.c"
 
-1386245972 g:\dropbox\github\gc_practica_open_gl\objects.h
+1386234065 g:\dropbox\github\gc_practica_open_gl\objects.h
 	<GL\glui.h>
 
 1352020667 g:\dropbox\github\gc_practica_open_gl\load3ds.c
@@ -103,33 +103,11 @@
 	<stdio.h>
 	<malloc.h>
 
-1386269087 source:g:\dropbox\github\gc_practica_open_gl\main.cpp
+1386235811 source:g:\dropbox\github\gc_practica_open_gl\main.cpp
 	"Objects.h"
 	<GL\glui.h>
 
 1230209916 g:\dropbox\github\gc_practica_open_gl\loadjpeg.c
-	<stdio.h>
-	<malloc.h>
-
-1387449924 source:\\psf\dropbox\github\gc_practica_open_gl\main.cpp
-	"Objects.h"
-	<GL\glui.h>
-
-1387449958 \\psf\dropbox\github\gc_practica_open_gl\objects.h
-	<GL\glui.h>
-
-1387450786 source:\\psf\dropbox\github\gc_practica_open_gl\objects.cpp
-	"Objects.h"
-	<GL/glui.h>
-	"load3ds.c"
-	"loadjpeg.c"
-
-1352020667 \\psf\dropbox\github\gc_practica_open_gl\load3ds.c
-	<math.h>
-	<stdio.h>
-	<malloc.h>
-
-1230209916 \\psf\dropbox\github\gc_practica_open_gl\loadjpeg.c
 	<stdio.h>
 	<malloc.h>
 
