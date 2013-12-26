@@ -61,6 +61,8 @@
 
 #define RESET_ID             400
 
+#define PI 3.14159265359
+
 //************************************************************** Clase TPrimtiva
 
 class TPrimitiva

@@ -10,7 +10,6 @@
 
 ****************************************************************************/
 
-
 #include "Objects.h"
 #include <GL/glui.h>
 
@@ -20,7 +19,7 @@
 unsigned char *dataTextura;
 int tex_width;
 int tex_height;
-GLuint texturas[5];
+GLuint texturas[5];  //Sólo estas globales
 
 // Variable para inicializar los vectores correpondientes con los valores iniciales
 GLfloat light0_ambient_c[4]  = {   0.2f, 0.2f, 0.2f, 1.0f };
@@ -40,7 +39,7 @@ GLfloat high_shininess_c[1] = { 100.0f };
 
 // Matriz de 4x4 = (I)
 float view_rotate_c[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
-float view_position_c[3] = { 0.0, -2.0, -15.0 };
+float view_position_c[3] = { 0.0, -2.0, -25.0 };
 
 
 //MATERIALES
@@ -160,6 +159,8 @@ TPrimitiva::TPrimitiva(int DL, int t)
             tx = 0;
 		    ty = 0.2;
 		    tz = 0;
+		    v = 0;
+
             //************************ Cargar modelos ***********************************
             int num_vertices = 0;
 
@@ -518,22 +519,34 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             glRotated(rz, 0, 0, 1);
 
             //velocidad del coche
+            float ang=PI*(ry)/180.0;
+
+            tz+=v*cos(ang);
+            tx+=v*sin(ang);
+
 
             if( v != 0)
             {
-                tx += v;
-                rr += v*20;
-            }
-            else if( v > 0)
-            {
-                v -= 0.5;
+                float desp_lateral = anguloRuedas * v * 0.4;
 
-                if(v < 0)
+                ry += desp_lateral;
+                rr += v*45;
+            }
+            if( v > 0)
+            {
+                v -= 0.05;
+
+
+                if(v < 0){
                     v=0;
+                }
             }
             else if(v < 0)
             {
-                v += 0.5;
+                v += 0.05;
+
+                if(v > 0)
+                    v = 0;
             }
 
 
@@ -806,15 +819,18 @@ void __fastcall TEscena::InitGL()
 
     //TEXTURAS
     //CAMINO
+
+    glGenTextures(5,&texturas[0]);
+
     dataTextura = LoadJPEG("../../Texturas/camino.jpg", &tex_width, &tex_height);
-    glGenTextures(1 ,&texturas[0]);
     glBindTexture( GL_TEXTURE_2D, texturas[0]);
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, tex_width, tex_height, 0, GL_RGBA,GL_UNSIGNED_BYTE, dataTextura);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, tex_width, tex_height, 0, GL_RGB,GL_UNSIGNED_BYTE, dataTextura);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,GL_NEAREST);
     glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    free(dataTextura);
 
 }
 
