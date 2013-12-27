@@ -22,6 +22,7 @@
 #define COEF_ROZ    0.006
 #define DESLIZ_RUEDA    45
 
+
 // Identificadores internos de los objetos
 #define SUELO_ID        105
 #define CARRETERA_ID    110
@@ -59,6 +60,7 @@
 #define LIGHT0_ENABLED_ID    200
 #define LIGHT1_ENABLED_ID    201
 #define LIGHT2_ENABLED_ID    202
+#define LUZ_AMBIENTE_ENABLED_ID    203
 #define LIGHT0_INTENSITY_ID  250
 #define LIGHT1_INTENSITY_ID  260
 #define LIGHT2_INTENSITY_ID  270
@@ -70,6 +72,7 @@
 
 #define WIREFRAME_ID         410
 #define V_AEREA              411
+#define V_SEGUIMIENTO        412
 
 //************************************************************** Clase TPrimtiva
 
@@ -114,6 +117,10 @@ public: // Atributos
         int perspectiva;
         int luzAmbiente;
         int camaraSeguimiento;
+        int vistaAerea;
+        float factorMovCam;
+        float cuantaLuzAmbiente;
+        int ultimoSelec;
 
         //variables de estado
         int show_car;
@@ -187,6 +194,7 @@ public:
 
         // live variables usadas por GLUI
         int             enable_panel2;
+        int             luzAmbiente;
         int             light0_enabled;
         int             light1_enabled;
         int             light2_enabled;
@@ -195,6 +203,7 @@ public:
         float           light2_intensity;
 
         GLUI            *glui, *glui2;
+        GLUI_Spinner    *luzAmbiente_spinner;
         GLUI_Spinner    *light0_spinner;
         GLUI_Spinner    *light1_spinner;
         GLUI_Spinner    *light2_spinner;

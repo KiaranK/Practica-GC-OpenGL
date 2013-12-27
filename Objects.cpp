@@ -21,17 +21,17 @@ GLuint texturas[5];
 
 // Variable para inicializar los vectores correpondientes con los valores iniciales
 GLfloat light0_ambient_c[4]  = {   0.2f, 0.2f, 0.2f, 1.0f };
-GLfloat light0_diffuse_c[4]  = {   0.8f, 0.8f, 0.8f, 1.0f };
+GLfloat light0_diffuse_c[4]  = {   0.6f, 0.6f, 0.6f, 1.0f };
 GLfloat light0_specular_c[4] = {   1.0f, 1.0f, 1.0f, 1.0f };
 GLfloat light0_position_c[4] = { -50.0f, 5.0f, 0.0f, 1.0f };
 
 GLfloat light1_ambient_c[4]  = { 0.2f,   0.2f,  0.2f, 1.0f };
-GLfloat light1_diffuse_c[4]  = { 0.8f,   0.8f,  0.8f, 1.0f };
+GLfloat light1_diffuse_c[4]  = { 0.6f,   0.6f,  0.6f, 1.0f };
 GLfloat light1_specular_c[4] = { 1.0f,   1.0f,  1.0f, 1.0f };
 GLfloat light1_position_c[4] = { 0.0f, 100.0f, 10.0f, 1.0f };
 
 GLfloat light2_ambient_c[4]  = { 0.2f,   0.2f,  0.2f, 1.0f };
-GLfloat light2_diffuse_c[4]  = { 0.8f,   0.8f,  0.8f, 1.0f };
+GLfloat light2_diffuse_c[4]  = { 0.6f,   0.6f,  0.6f, 1.0f };
 GLfloat light2_specular_c[4] = { 1.0f,   1.0f,  1.0f, 1.0f };
 GLfloat light2_position_c[4] = { 50.0f, 50.0f, 20.0f, 1.0f };
 
@@ -601,8 +601,17 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 {
                     glPushMatrix();
                     glTranslated(0, -0.17, 1.27);
+                    glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
+                    glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
+                    glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
+                    glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
+                    glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+
+                    glEnable(GL_BLEND);
                     glColor4f(0.0,0.0,1.0,0.9);
+                    glBlendFunc(GL_SRC_ALPHA,GL_ONE);
                     glCallList(ID+MARCADOR);
+                    glDisable(GL_BLEND);
                     glPopMatrix();
                 }
             }
@@ -811,6 +820,8 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
 TEscena::TEscena() {
 
+    ultimoSelec=0;
+
     raton=0;
     rotacionX=0;
     rotacionY=1;
@@ -837,7 +848,10 @@ TEscena::TEscena() {
     sentido=0;
     perspectiva=1;
     luzAmbiente=1;
-    camaraSeguimiento=1;
+    camaraSeguimiento=0;
+    vistaAerea=0;
+    factorMovCam=0.7;
+    cuantaLuzAmbiente = 0.8;
 
     scale = 1.0;
     xy_aspect = 1;
@@ -846,8 +860,6 @@ TEscena::TEscena() {
 
     memcpy(view_position, view_position_c, 3*sizeof(float));
     memcpy(view_rotate, view_rotate_c, 16*sizeof(float));
-
-    memcpy(light0_ambient, light0_ambient_c, 4*sizeof(float));
 
     memcpy(light0_ambient, light0_ambient_c, 4*sizeof(float));
     memcpy(light0_diffuse, light0_diffuse_c, 4*sizeof(float));
@@ -984,11 +996,21 @@ void __fastcall TEscena::Render()
 {
     if(escena.luzAmbiente)
     {
+        GLfloat arrLuzAmbiente[4];
+        GLfloat arrLuzAmbienteDividido[4];
+
+        for(int i = 0; i< 4; i++)
+        {
+            arrLuzAmbiente[i]=escena.cuantaLuzAmbiente;
+            arrLuzAmbienteDividido[i]=cuantaLuzAmbiente/5;
+        }
+
+
         glClearColor(0.0, 0.5, 1.0, 1.0);
-        glLightfv(GL_LIGHT0, GL_AMBIENT, escena.light0_ambient);
-        glLightfv(GL_LIGHT1, GL_AMBIENT, escena.light1_ambient );
-        glLightfv(GL_LIGHT2, GL_AMBIENT, escena.light2_ambient );
-        glMaterialfv(GL_FRONT, GL_AMBIENT, escena.mat_ambient);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, arrLuzAmbienteDividido);
+        glLightfv(GL_LIGHT1, GL_AMBIENT, arrLuzAmbienteDividido );
+        glLightfv(GL_LIGHT2, GL_AMBIENT, arrLuzAmbienteDividido );
+        glMaterialfv(GL_FRONT, GL_AMBIENT, arrLuzAmbiente);
    }
     else
     {
@@ -1001,6 +1023,9 @@ void __fastcall TEscena::Render()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // Clip Plane Equations para la reflexion
+	double eqr[] = {0.0f,-1.0f, 0.0f, 0.0f};
+
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
@@ -1008,6 +1033,41 @@ void __fastcall TEscena::Render()
     glTranslatef( view_position[0], view_position[1], view_position[2] );   // Traslación
     glMultMatrixf(view_rotate);                                             // Rotación
     glScalef(scale, scale, scale);                                          // Escalado
+
+
+//*********************************CAMARA SEGUIMIENTO
+    if(escena.camaraSeguimiento==1)
+    {
+        //Obtenemos el coche
+        TPrimitiva *cam = NULL;
+        cam = GetCar(seleccion);
+
+        //Situamos camara detrás del coche
+        if(cam)
+        {
+            float angulo = (cam->ry*PI)/180.0;
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            //PosCamX,PosCamY,PosCamZ,  DondeMiraX,DondeMiraY,DondeMiraZ,   0,1,0(direccion arriba camara)
+            gluLookAt(cam->tx-20*sin(angulo),cam->ty+10,cam->tz-20*cos(angulo),cam->tx,cam->ty+5,cam->tz,0,1,0);
+        }
+    }
+//*********************************VISTA AEREA
+    else if(escena.vistaAerea == 1)
+    {
+        //Obtenemos el coche
+        TPrimitiva *cam = NULL;
+        cam = GetCar(seleccion);
+
+        //Situamos camara arriba del coche
+        if(cam)
+        {
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            //PosCamX,PosCamY,PosCamZ,  DondeMiraX,DondeMiraY,DondeMiraZ,   0,1,0
+            gluLookAt(cam->tx,cam->ty+150,cam->tz,cam->tx,cam->ty,cam->tz,0,0,1);
+        }
+    }
 
     glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
     glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
@@ -1082,6 +1142,10 @@ void __fastcall TEscena::Pick3D(int mouse_x, int mouse_y)
             }
 		}
     }
+
+    if(seleccion != 0)
+        escena.ultimoSelec= seleccion;
+
     sprintf(cad, "%03d [%03d, %03d]", seleccion, mouse_x, mouse_y);
     gui.sel_tex->set_text(cad);
 }
@@ -1091,12 +1155,13 @@ void __fastcall TEscena::Pick3D(int mouse_x, int mouse_y)
 TGui::TGui()
 {
     enable_panel2 = 1;
+    luzAmbiente = 1;
     light0_enabled = 1;
     light1_enabled = 1;
     light2_enabled = 1;
-    light0_intensity = 0.8;
-    light1_intensity = 0.8;
-    light2_intensity = 0.8;
+    light0_intensity = 0.6;
+    light1_intensity = 0.6;
+    light2_intensity = 0.6;
 }
 
 void controlCallback(int control)
@@ -1117,15 +1182,20 @@ void __fastcall TGui::Init(int main_window) {
     glui = GLUI_Master.create_glui_subwindow( window_id, GLUI_SUBWINDOW_RIGHT );
 
     obj_panel = new GLUI_Rollout(glui, "Propiedades", true );
-
+    GLUI_Scrollbar *sb;
     /***** Control para las propiedades de escena *****/
 
     new GLUI_Checkbox( obj_panel, "Modo Alambrico", &escena.wireframe, WIREFRAME_ID, controlCallback );
     new GLUI_Checkbox( obj_panel, "Z Buffer", &escena.z_buffer, 1, controlCallback );
     new GLUI_Checkbox( obj_panel, "Culling", &escena.culling, 1, controlCallback );
-    new GLUI_Checkbox( obj_panel, "Luz Ambiente", &escena.luzAmbiente, 1, controlCallback );
-    new GLUI_Checkbox( obj_panel, "Camara seguimiento", &escena.camaraSeguimiento, 1, controlCallback );
 
+    new GLUI_StaticText( obj_panel, "" );
+    new GLUI_StaticText( obj_panel, "Factor Camara Movimiento" );
+    sb = new GLUI_Scrollbar( obj_panel, "Facto MovCam",GLUI_SCROLL_HORIZONTAL,
+                            &escena.factorMovCam,1,controlCallback);
+    sb->set_float_limits(0.1,1);
+
+    new GLUI_Button( glui, "Vista Seguimiento", V_SEGUIMIENTO, controlCallback );
     new GLUI_Button( glui, "Vista aerea", V_AEREA, controlCallback );
 
     /******** Añade controles para las luces ********/
@@ -1135,15 +1205,21 @@ void __fastcall TGui::Init(int main_window) {
 
     GLUI_Rollout *roll_lights = new GLUI_Rollout(glui, "Luces", false );
 
+    GLUI_Panel *lightAmbient = new GLUI_Panel( roll_lights, "Luz Ambiente" );
     GLUI_Panel *light0 = new GLUI_Panel( roll_lights, "Luz 1" );
     GLUI_Panel *light1 = new GLUI_Panel( roll_lights, "Luz 2" );
     GLUI_Panel *light2 = new GLUI_Panel( roll_lights, "Luz 3" );
+
+    new GLUI_Checkbox( lightAmbient, "Encendida", &escena.luzAmbiente, LUZ_AMBIENTE_ENABLED_ID, controlCallback );
+    sb = new GLUI_Scrollbar( lightAmbient, "Intensidad",GLUI_SCROLL_HORIZONTAL,
+                            &escena.cuantaLuzAmbiente,1,controlCallback);
+    sb->set_float_limits(0,1);
 
     new GLUI_Checkbox( light0, "Encendida", &light0_enabled, LIGHT0_ENABLED_ID, controlCallback );
     light0_spinner = new GLUI_Spinner( light0, "Intensidad:", &light0_intensity,
                             LIGHT0_INTENSITY_ID, controlCallback );
     light0_spinner->set_float_limits( 0.0, 1.0 );
-    GLUI_Scrollbar *sb;
+
     sb = new GLUI_Scrollbar( light0, "Rojo",GLUI_SCROLL_HORIZONTAL,
                             &escena.light0_diffuse[0],LIGHT0_INTENSITY_ID,controlCallback);
     sb->set_float_limits(0,1);
@@ -1367,28 +1443,32 @@ void __fastcall TGui::ControlCallback( int control )
         glPolygonMode(GL_BACK, GL_FILL);
     }
   }
+  else if(control==V_SEGUIMIENTO){
+    escena.seleccion = escena.ultimoSelec;
+
+    if(escena.camaraSeguimiento)
+        escena.camaraSeguimiento=0;
+    else{
+        if(escena.seleccion != 0)
+        {
+            escena.camaraSeguimiento=1;
+            escena.vistaAerea=0;
+        }
+    }
+  }
   else if(control==V_AEREA)
     {
-        control=RESET_ID;
+        escena.seleccion = escena.ultimoSelec;
 
-        float r[16];
-        glMatrixMode(GL_MODELVIEW);
-        glPushMatrix();
-        glLoadIdentity();
-
-        glRotatef(90,1,0,0);
-        glRotatef(180,0,1,0);
-        glGetFloatv(GL_MODELVIEW_MATRIX, r);
-
-        for(int i=0; i<16; i++)
-            escena.view_rotate[i]=r[i];
-
-        escena.view_position[0]= -5;
-        escena.view_position[1]= 5;
-        escena.view_position[2]= -160;
-
-        glPopMatrix();
-        glutPostRedisplay();
+        if(escena.vistaAerea)
+            escena.vistaAerea=0;
+        else{
+            if(escena.seleccion != 0)
+            {
+                escena.vistaAerea=1;
+                escena.camaraSeguimiento=0;
+            }
+        }
     }
 }
 
@@ -1437,14 +1517,21 @@ void __fastcall TGui::Motion(int x, int y )
 {
     if(escena.raton==1) //MOVERSE CON RATON
     {
-        if(x > escena.last_x) //Der
-            escena.view_position[0]+=1.0;
-        else if (x < escena.last_x) //Izq
-            escena.view_position[0]-=1.0;
-        if(y > escena.last_y) //Up
-            escena.view_position[1]-=1.0;
-        else if (y < escena.last_y) //Down
-            escena.view_position[1]+=1.0;
+        if(x > escena.last_x)           //Der
+            escena.view_position[0]+=escena.factorMovCam;
+        else if (x < escena.last_x)     //Izq
+            escena.view_position[0]-=escena.factorMovCam;
+        if(y > escena.last_y)           //Up
+            escena.view_position[1]-=escena.factorMovCam;
+        else if (y < escena.last_y)     //Down
+            escena.view_position[1]+=escena.factorMovCam;
+    }
+    else if (escena.raton==2) //Eje Z Escala/Mover
+    {
+        if(y < escena.last_y)
+            escena.view_position[2]+=escena.factorMovCam;
+        else if(y > escena.last_y)
+            escena.view_position[2]-=escena.factorMovCam;
     }
     else if(escena.raton==3) //ROTAR CON RATON
     {
@@ -1453,33 +1540,36 @@ void __fastcall TGui::Motion(int x, int y )
         glPushMatrix();
         glLoadIdentity();
 
+/*
         if(escena.rotacionX) //Eje X
         {
-            if(y>escena.last_y) //Up
-                glRotated(escena.last_y+y*0.2, 1, 0, 0);
-            else if(y<escena.last_y) //Down
-                glRotated(escena.last_y-y*0.2, 1, 0, 0);
+            if(x>escena.last_x) //Up
+                glRotated(escena.last_x+x*(escena.factorMovCam), 1, 0, 0);
+            else if(x<escena.last_x) //Down
+                glRotated(escena.last_x-x*(escena.factorMovCam), 1, 0, 0);
 
             glGetFloatv(GL_MODELVIEW_MATRIX, rot);
         }
-        else if(escena.rotacionY) //Eje Y
+        */
+        if(escena.rotacionY) //Eje Y
         {
             if(y>escena.last_y) //Up
-                glRotated(escena.last_y+y*0.2, 0, 1, 0);
+                glRotated(escena.last_y+y*(escena.factorMovCam/5.0), 0, 1, 0);
             else if(y<escena.last_y)//Down
-                glRotated(escena.last_y-y*0.2, 0, 1, 0);
+                glRotated(escena.last_y-y*(escena.factorMovCam/5.0), 0, 1, 0);
 
             glGetFloatv(GL_MODELVIEW_MATRIX, rot);
         }
+        /*
         else if(escena.rotacionZ) //Eje Z
         {
             if(y>escena.last_y) //Up
-                glRotated(escena.last_y+y*0.2, 0, 0, 1);
+                glRotated(escena.last_y+y*(escena.factorMovCam/5.0), 0, 0, 1);
             else if(y<escena.last_y) //Down
-                glRotated(escena.last_y-y*0.2, 0, 0, 1);
+                glRotated(escena.last_y-y*(escena.factorMovCam/5.0), 0, 0, 1);
 
             glGetFloatv(GL_MODELVIEW_MATRIX, rot);
-        }
+        }*/
 
         for(int i=0; i<16; i++)
             if(escena.view_rotate[i]!=rot[i])
@@ -1488,13 +1578,6 @@ void __fastcall TGui::Motion(int x, int y )
         glPopMatrix();
     }
 
-    else if (escena.raton==2) //Eje Z Escala/Mover
-    {
-        if(y < escena.last_y)
-            escena.view_position[2]+=1.0;
-        else if(y > escena.last_y)
-            escena.view_position[2]-=1.0;
-    }
     escena.last_x=x;
     escena.last_y=y;
 
@@ -1505,7 +1588,8 @@ void __fastcall TGui::Motion(int x, int y )
 
 void __fastcall TGui::Mouse(int button, int button_state, int x, int y )
 {
-    if(button_state==GLUT_DOWN) //Clickar
+    //Si no estamos en vista aerea ni seguimiento, accionamos ratón
+    if(button_state==GLUT_DOWN && escena.vistaAerea==0 && escena.camaraSeguimiento == 0)
 	{
 		if(button==GLUT_LEFT_BUTTON) //Izq pulsado
 			escena.raton = 1;
@@ -1520,7 +1604,7 @@ void __fastcall TGui::Mouse(int button, int button_state, int x, int y )
 	else if(button_state==GLUT_UP) //Liberar tecla
 	{
 	    escena.raton=0;
-	    if(button==GLUT_LEFT_BUTTON)
+	    if(button==GLUT_LEFT_BUTTON && escena.vistaAerea==0 && escena.camaraSeguimiento == 0)
 			escena.Pick3D(x, y);
 	}
 }

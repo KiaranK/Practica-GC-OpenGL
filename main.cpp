@@ -143,8 +143,8 @@ int main(int argc, char* argv[])
     glutInit(&argc, argv);
     //queremos utilizar RGBA, double buffer, zBuffer, stencilBuffer
     glutInitDisplayMode( GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH | GLUT_STENCIL | GLUT_MULTISAMPLE );
-    glutInitWindowPosition( 50, 50 );
-    glutInitWindowSize( 1000, 600 );
+    glutInitWindowPosition( 50, 25 );
+    glutInitWindowSize( 1100, 710 );
 
     int main_window = glutCreateWindow( "CarGL V1.1 (2012)" );
 
@@ -211,7 +211,6 @@ int main(int argc, char* argv[])
     ladera_baja1->tz = 65;
 
     carrCorta1->tx = 35;
-    carrCorta1->ty = 20;
     carrCorta1->tz = 25;
     carrCorta1->rz = 0;
 
@@ -301,6 +300,7 @@ int main(int argc, char* argv[])
     escena.AddObject(ladera_alta1);
 
     escena.AddCar(car1);
+    escena.ultimoSelec=COCHE_ID;
 
     /**** Regular GLUT main loop ****/
     glutMainLoop();
