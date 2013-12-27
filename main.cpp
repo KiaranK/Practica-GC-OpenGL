@@ -59,19 +59,19 @@ static void SpecialKey(int key, int x, int y)
         switch (key)
         {
             case GLUT_KEY_UP:   // El coche avanza
-                car->v += 5;
+                car->v += VEL;
                 break;
             case GLUT_KEY_DOWN:   // El coche retrocede
-                car->v -= 5;
+                car->v -= VEL;
                 break;
 
             case GLUT_KEY_LEFT:   // Giramos ruedas
                 if(car->anguloRuedas < 24)
-                    car->anguloRuedas += 4;
+                    car->anguloRuedas += 1;
                 break;
             case GLUT_KEY_RIGHT:
                 if(car->anguloRuedas > -24)
-                    car->anguloRuedas -= 4;
+                    car->anguloRuedas -= 1;
                 break;
         }
 
@@ -211,6 +211,7 @@ int main(int argc, char* argv[])
     ladera_baja1->tz = 65;
 
     carrCorta1->tx = 35;
+    carrCorta1->ty = 20;
     carrCorta1->tz = 25;
     carrCorta1->rz = 0;
 

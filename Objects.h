@@ -17,6 +17,11 @@
 
 #include <GL\glui.h>
 
+#define VEL 0.15
+#define PI  3.14159265358979
+#define COEF_ROZ    0.006
+#define DESLIZ_RUEDA    45
+
 // Identificadores internos de los objetos
 #define SUELO_ID        105
 #define CARRETERA_ID    110
@@ -31,7 +36,7 @@
 #define CASA_ENTRADA    4
 
 
-#define COCHE_ID	    100 // Un coche cada 100
+#define COCHE_ID	    99 // Un coche cada 100
 
 #define COCHE           0   //Estas variables se suman a coche, para así poder identificar varias partes de un objeto
 #define RUEDA	        1
@@ -53,13 +58,18 @@
 // IDs para los callbacks de TGui
 #define LIGHT0_ENABLED_ID    200
 #define LIGHT1_ENABLED_ID    201
+#define LIGHT2_ENABLED_ID    202
 #define LIGHT0_INTENSITY_ID  250
 #define LIGHT1_INTENSITY_ID  260
+#define LIGHT2_INTENSITY_ID  270
 
 #define ENABLE_ID            300
 #define DISABLE_ID           301
 
 #define RESET_ID             400
+
+#define WIREFRAME_ID         410
+#define V_AEREA              411
 
 //************************************************************** Clase TPrimtiva
 
@@ -112,7 +122,7 @@ public: // Atributos
 
         int show_farola_base;
         int show_farola_capucha;
-
+        int show_charco;
         int show_casa;
 
         GLfloat view_position[3];
@@ -128,6 +138,11 @@ public: // Atributos
         GLfloat light1_diffuse[4];
         GLfloat light1_specular[4];
         GLfloat light1_position[4];
+
+        GLfloat light2_ambient[4];
+        GLfloat light2_diffuse[4];
+        GLfloat light2_specular[4];
+        GLfloat light2_position[4];
 
         GLfloat mat_ambient[4];
         GLfloat mat_diffuse[4];
@@ -174,12 +189,15 @@ public:
         int             enable_panel2;
         int             light0_enabled;
         int             light1_enabled;
+        int             light2_enabled;
         float           light0_intensity;
         float           light1_intensity;
+        float           light2_intensity;
 
         GLUI            *glui, *glui2;
         GLUI_Spinner    *light0_spinner;
         GLUI_Spinner    *light1_spinner;
+        GLUI_Spinner    *light2_spinner;
         GLUI_RadioGroup *radio;
         GLUI_Panel      *obj_panel;
         GLUI_Rotation   *view_rot;
