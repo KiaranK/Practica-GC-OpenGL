@@ -165,6 +165,7 @@ public: // Atributos
         int     wireframe;
         int     z_buffer;
         int     culling;
+        int     textura;
         float   scale;
 
 public: // Métodos

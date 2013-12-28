@@ -137,10 +137,10 @@
 	"Objects.h"
 	<GL\glui.h>
 
-1388158698 c:\gc_practica_open_gl\objects.h
+1388177743 c:\gc_practica_open_gl\objects.h
 	<GL\glui.h>
 
-1388158901 source:c:\gc_practica_open_gl\objects.cpp
+1388195778 source:c:\gc_practica_open_gl\objects.cpp
 	"Objects.h"
 	<GL/glui.h>
 	"load3ds.c"
@@ -159,7 +159,7 @@
 	<stdio.h>
 	<malloc.h>
 
-1388094904 c:\gc_practica_open_gl\imageloader.cpp
+1388168938 c:\gc_practica_open_gl\imageloader.cpp
 	<assert.h>
 	<fstream>
 	"imageloader.h"

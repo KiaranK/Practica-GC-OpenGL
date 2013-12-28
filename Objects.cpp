@@ -17,7 +17,9 @@
 #include "load3ds.c"
 #include "imageloader.cpp"
 
-GLuint texturas[5];
+//0 camino, 1 ladera,  2 cesped,  3 pared_vieja_textura
+//4 madera_vieja,  5 teja_antigua,  6 arena
+GLuint texturas[7] = { 0,0,0,0,0,0,0};
 
 // Variable para inicializar los vectores correpondientes con los valores iniciales
 GLfloat light0_ambient_c[4]  = {   0.2f, 0.2f, 0.2f, 1.0f };
@@ -59,16 +61,187 @@ GLfloat emision[] = {1.0, 1.0, 1.0, 0.9};
 
 //Colores
 float color_suelo[4] = {0.15,1,0.15, 1};
-//float color_suelo[4] = {1.0,1.0,1.0, 1.0};
-float colores_c[2][4] = { {0.8, 0.5, 0.0, 1.0}, {0.5, 0.5, 0.5, 1.0}}; //Coche, rueda
+float color_blanco[4] = {1.0,1.0,1.0, 1.0};
+float colores_c[2][4] = { {0.8, 0.5, 0.0, 1.0}, {0.35, 0.35, 0.35, 1.0}}; //Coche, rueda
 float colores_farola[3][4] = {{0.75, 0.75, 0.75, 1.0},{0.5, 0.5, 0.5, 1.0},{1.0, 1.0, 1.0, 0.42}}; //Base, capucha, y cristal de la farola
-float colores_carr[4] = {1.0,1.0,1.0, 1.0};
+float colores_carr[4] = {0.8,0.6,0.4, 1.0};
+float colores_carr_claro[4] = {1.0,0.8,0.6, 1.0};
 float colores_casa[4][4] = {
                                 {1.0 , 1.0, 1.0, 1.0},      //Casa
                                 {1.0, 0.15, 0.0, 1.0},      //Tejado
                                 {0.93, 0.65, 0.05, 1.0},    //Puerta y Ventanas
                                 {0.93, 0.8, 0.25, 1.0}      //Entrada
                             };
+
+
+int LoadGLTextures()									// Load Bitmaps And Convert To Textures
+{
+    int Status=TRUE;
+	Image *TextureImage[7];
+
+	//memset(TextureImage[0],0,sizeof(void *)*1);
+
+	// Load The Bitmap, Check For Errors, If Bitmap's Not Found Quit
+	if (TextureImage[0]=loadBMP("../../Texturas/camino.bmp"))
+	{
+		glGenTextures(1, &texturas[0]);					// Create The Texture
+
+		// Typical Texture Generation Using Data From The Bitmap
+		glBindTexture(GL_TEXTURE_2D, texturas[0]);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[0]->width, TextureImage[0]->height, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]->pixels);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	}
+    else
+        Status=FALSE;
+
+    if (TextureImage[0])									// If Texture Exists
+	{
+		if (TextureImage[0]->pixels)							// If Texture Image Exist
+			free(TextureImage[0]->pixels);					// Free The Texture Image Memory
+
+		free(TextureImage[0]);								// Free The Image Structure
+	}
+
+
+
+	if (TextureImage[1]=loadBMP("../../Texturas/ladera.bmp"))
+	{
+		glGenTextures(1, &texturas[1]);					// Create The Texture
+
+		// Typical Texture Generation Using Data From The Bitmap
+		glBindTexture(GL_TEXTURE_2D, texturas[1]);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[1]->width, TextureImage[1]->height, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[1]->pixels);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	}
+	else
+        Status=FALSE;
+
+    if (TextureImage[1])									// If Texture Exists
+	{
+		if (TextureImage[1]->pixels)							// If Texture Image Exist
+			free(TextureImage[1]->pixels);					// Free The Texture Image Memory
+
+		free(TextureImage[1]);								// Free The Image Structure
+	}
+
+
+	if (TextureImage[2]=loadBMP("../../Texturas/cesped.bmp"))
+	{
+		glGenTextures(1, &texturas[2]);					// Create The Texture
+
+		// Typical Texture Generation Using Data From The Bitmap
+		glBindTexture(GL_TEXTURE_2D, texturas[2]);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[2]->width, TextureImage[2]->height, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[2]->pixels);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	}
+	else
+        Status=FALSE;
+
+    if (TextureImage[2])									// If Texture Exists
+	{
+		if (TextureImage[2]->pixels)							// If Texture Image Exist
+			free(TextureImage[2]->pixels);					// Free The Texture Image Memory
+
+		free(TextureImage[2]);								// Free The Image Structure
+	}
+
+        //0 camino, 1 ladera,  2 cesped,  3 pared_vieja_textura
+        //4 madera_vieja,  5 teja_antigua,  6 arena
+	if (TextureImage[3]=loadBMP("../../Texturas/pared_vieja_textura.bmp"))
+	{
+	    glGenTextures(1, &texturas[3]);					// Create The Texture
+
+		// Typical Texture Generation Using Data From The Bitmap
+		glBindTexture(GL_TEXTURE_2D, texturas[3]);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[3]->width, TextureImage[3]->height, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[3]->pixels);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	}
+	else
+        Status=FALSE;
+
+    if (TextureImage[3])									// If Texture Exists
+	{
+		if (TextureImage[3]->pixels)							// If Texture Image Exist
+			free(TextureImage[3]->pixels);					// Free The Texture Image Memory
+
+		free(TextureImage[3]);								// Free The Image Structure
+	}
+
+
+	if (TextureImage[4]=loadBMP("../../Texturas/madera_vieja.bmp"))
+	{
+		glGenTextures(1, &texturas[4]);					// Create The Texture
+
+		// Typical Texture Generation Using Data From The Bitmap
+		glBindTexture(GL_TEXTURE_2D, texturas[4]);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[4]->width, TextureImage[4]->height, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[4]->pixels);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	}
+	else
+        Status=FALSE;
+
+    if (TextureImage[4])									// If Texture Exists
+	{
+		if (TextureImage[4]->pixels)							// If Texture Image Exist
+			free(TextureImage[4]->pixels);					// Free The Texture Image Memory
+
+		free(TextureImage[4]);								// Free The Image Structure
+	}
+
+
+
+	if (TextureImage[5]=loadBMP("../../Texturas/teja_antigua.bmp"))
+	{
+		glGenTextures(1, &texturas[5]);					// Create The Texture
+
+		// Typical Texture Generation Using Data From The Bitmap
+		glBindTexture(GL_TEXTURE_2D, texturas[5]);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[5]->width, TextureImage[5]->height, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[5]->pixels);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	}
+	else
+        Status=FALSE;
+
+    if (TextureImage[5])									// If Texture Exists
+	{
+		if (TextureImage[5]->pixels)							// If Texture Image Exist
+			free(TextureImage[5]->pixels);					// Free The Texture Image Memory
+
+		free(TextureImage[5]);								// Free The Image Structure
+	}
+
+
+	if (TextureImage[6]=loadBMP("../../Texturas/arena.bmp"))
+	{
+		glGenTextures(1, &texturas[6]);					// Create The Texture
+
+		// Typical Texture Generation Using Data From The Bitmap
+		glBindTexture(GL_TEXTURE_2D, texturas[6]);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[6]->width, TextureImage[6]->height, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[6]->pixels);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+	}
+	else
+        Status=FALSE;
+
+	if (TextureImage[6])									// If Texture Exists
+	{
+		if (TextureImage[6]->pixels)							// If Texture Image Exist
+			free(TextureImage[6]->pixels);					// Free The Texture Image Memory
+
+		free(TextureImage[6]);								// Free The Image Structure
+	}
+
+	return Status; 										// Return The Status
+}
+
+
 
 //************************************************************** Variables de clase
 
@@ -90,17 +263,21 @@ TPrimitiva::TPrimitiva(int DL, int t)
 
 	switch (tipo) {
 	    case SUELO_ID: {  // Creación de la carretera
-		    tx = ty = tz = 0;
+		    tx = tz = 0;
+		    ty = 0.0;
             glNewList(ID, GL_COMPILE);
                 glBegin(GL_QUADS);
                     // La perpendicular al suelo es el eje Y
                     glNormal3f(0.0, 1.0, 0.0);
-                    glColor4fv(color_suelo);
                     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
                     glVertex3f( 1000, -0.001, -1000);
+                    glTexCoord2f(25.0,0.0);
                     glVertex3f(-1000, -0.001, -1000);
+                    glTexCoord2f(0.0,0.0);
                     glVertex3f(-1000, -0.001,  1000);
+                    glTexCoord2f(0.0,25.0);
                     glVertex3f( 1000, -0.001,  1000);
+                    glTexCoord2f(25.0,25.0);
 
                 glEnd();
             glEndList();
@@ -110,7 +287,7 @@ TPrimitiva::TPrimitiva(int DL, int t)
 
 		case CARRETERA_ID: {  // Creación de la carretera
 		    tx = 0;
-		    ty = 0;
+		    ty = 0.02;
 		    tz = 0;
 		    rx = -90;
 		    ry = 0;
@@ -141,7 +318,7 @@ TPrimitiva::TPrimitiva(int DL, int t)
 
 		case CARRETERA_LARGA_ID: {  // Creación de la carretera
 		    tx = 0;
-		    ty = 0;
+		    ty = 0.04;
 		    tz = 0;
 		    rx = -90;
 		    ry = 0;
@@ -173,7 +350,7 @@ TPrimitiva::TPrimitiva(int DL, int t)
 		case COCHE_ID: { // Creación del coche
 
             tx = 0;
-		    ty = 0.2;
+		    ty = 0.25;
 		    tz = 0;
 		    v = 0;
 
@@ -307,7 +484,8 @@ TPrimitiva::TPrimitiva(int DL, int t)
 
 		case CASA_ID: { // Creación del coche
 
-            tx = ty = tz = 0;
+            tx = tz = 0;
+            ty = 0.09;
 
             //************************ Cargar modelos ***********************************
             int num_vertices = 0;
@@ -407,7 +585,7 @@ TPrimitiva::TPrimitiva(int DL, int t)
 
 		case LADERA_BAJA_ID: {  // Creación de la carretera
 		    tx = tz = 0;
-		    ty = -1.5;
+		    ty = -0.3;
 		    sx = sy = sz = 3;
 
             int num_vertices = 0;
@@ -434,8 +612,9 @@ TPrimitiva::TPrimitiva(int DL, int t)
 
 		case LADERA_ALTA_ID: {  // Creación de la carretera
 		    tx = tz = 0;
-		    ty = -1.5;
+		    ty = -0.3;
 		    sx = sy = sz = 3.7;
+		    rx = -90;
 
             int num_vertices = 0;
 
@@ -467,15 +646,27 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
     switch (tipo) {
 
         case SUELO_ID: {
+
             glPushMatrix();
             glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
             glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
             glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
             glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
             glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+
+            if(escena.textura)
+            {
+                glColor4fv(color_blanco);
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, texturas[2]);
+            }
+            else
+                glColor4fv(color_suelo);
+
             glLoadName(0);  // No seleccionable
             glCallList(ID);
             glPopMatrix();
+            glDisable(GL_TEXTURE_2D);
 
             break;
         }
@@ -497,10 +688,17 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
                 glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
                 glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
-                glColor4fv(colores_carr);
 
-                glEnable(GL_TEXTURE_2D);
-                glBindTexture(GL_TEXTURE_2D, texturas[0]);
+
+                if(escena.textura)
+                {
+                    glColor4fv(colores_carr_claro);
+                    glEnable(GL_TEXTURE_2D);
+                    glBindTexture(GL_TEXTURE_2D, texturas[0]);
+                }
+                else
+                    glColor4fv(colores_carr);
+
                 glLoadName(0); //No seleccionable
                 glCallList(ID);
                 glDisable(GL_TEXTURE_2D);
@@ -526,16 +724,19 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
                 glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
                 glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
-                glColor4fv(colores_carr);
 
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-                glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                if(escena.textura)
+                {
+                    glColor4fv(colores_carr_claro);
+                    glEnable(GL_TEXTURE_2D);
+                    glBindTexture(GL_TEXTURE_2D, texturas[0]);
+                }
+                else
+                    glColor4fv(colores_carr);
 
-                glEnable(GL_TEXTURE_2D);
-                glBindTexture(GL_TEXTURE_2D, texturas[0]);
                 glLoadName(0); //No seleccionable
                 glCallList(ID);
-               // glDisable(GL_TEXTURE_2D);
+                glDisable(GL_TEXTURE_2D);
             }
 
             glPopMatrix();
@@ -735,29 +936,73 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
                 glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
                 glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
-                glColor4fv(colores_casa[0]);
+
+                if(escena.textura)
+                {
+                    glColor4fv(color_blanco);
+                    glEnable(GL_TEXTURE_2D);
+                    glBindTexture(GL_TEXTURE_2D, texturas[3]);
+                }
+                else
+                    glColor4fv(colores_casa[0]);
+
                 glLoadName(0);
                 glCallList(ID+CASA_BASE);
+                glDisable(GL_TEXTURE_2D);
 
-                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glColor4fv(colores_casa[1]);
+
+                if(escena.textura)
+                {
+                    glColor4fv(color_blanco);
+                    glEnable(GL_TEXTURE_2D);
+                    glBindTexture(GL_TEXTURE_2D, texturas[5]);
+                }
+                else
+                    glColor4fv(colores_casa[1]);
+
                 glLoadName(0);
                 glCallList(ID+CASA_TEJADO);
+                glDisable(GL_TEXTURE_2D);
 
-                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glColor4fv(colores_casa[2]);
+                if(escena.textura)
+                {
+                    glColor4fv(color_blanco);
+                    glEnable(GL_TEXTURE_2D);
+                    glBindTexture(GL_TEXTURE_2D, texturas[4]);
+                }
+                else
+                    glColor4fv(colores_casa[2]);
+
                 glLoadName(0);
                 glCallList(ID+CASA_VENTANAS);
+                glDisable(GL_TEXTURE_2D);
 
-                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glColor4fv(colores_casa[2]);
+                if(escena.textura)
+                {
+                    glColor4fv(color_blanco);
+                    glEnable(GL_TEXTURE_2D);
+                    glBindTexture(GL_TEXTURE_2D, texturas[4]);
+                }
+                else
+                    glColor4fv(colores_casa[2]);
+
                 glLoadName(0);
                 glCallList(ID+CASA_PUERTA);
+                glDisable(GL_TEXTURE_2D);
 
-                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glColor4fv(colores_casa[3]);
+
+                if(escena.textura)
+                {
+                    glColor4fv(color_blanco);
+                    glEnable(GL_TEXTURE_2D);
+                    glBindTexture(GL_TEXTURE_2D, texturas[6]);
+                }
+                else
+                    glColor4fv(colores_casa[3]);
+
                 glLoadName(0);
                 glCallList(ID+CASA_ENTRADA);
+                glDisable(GL_TEXTURE_2D);
             }
             glPopMatrix();
             break;
@@ -778,12 +1023,21 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
             glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
             glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
-            glColor4fv(color_suelo);
+
+            if(escena.textura)
+            {
+                glColor4fv(color_blanco);
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, texturas[1]);
+            }
+            else
+                glColor4fv(color_suelo);
 
             glLoadName(0); //No seleccionable
             glCallList(ID);
 
             glPopMatrix();
+            glDisable(GL_TEXTURE_2D);
             break;
         }
 
@@ -802,12 +1056,21 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
             glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
             glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
-            glColor4fv(color_suelo);
+
+            if(escena.textura)
+            {
+                glColor4fv(color_blanco);
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, texturas[1]);
+            }
+            else
+                glColor4fv(color_suelo);
 
             glLoadName(0); //No seleccionable
             glCallList(ID);
 
             glPopMatrix();
+            glDisable(GL_TEXTURE_2D);
             break;
         }
     }
@@ -841,6 +1104,7 @@ TEscena::TEscena() {
     show_casa = 1;
 
     // live variables usadas por GLUI en TGui
+    textura=1;
     wireframe = 0;
     z_buffer = 1;
     culling = 0;
@@ -884,6 +1148,11 @@ TEscena::TEscena() {
 
 void __fastcall TEscena::InitGL()
 {
+    if (!LoadGLTextures())								// Jump To Texture Loading Routine ( NEW )
+	{
+		return;									// If Texture Didn't Load Return FALSE
+	}
+
     int tx, ty, tw, th;
     GLUI_Master.get_viewport_area( &tx, &ty, &tw, &th );
 
@@ -928,12 +1197,6 @@ void __fastcall TEscena::InitGL()
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-
-    //TEXTURAS
-    //CAMINO
-    Image* image = loadBMP("../../Texturas/camino.bmp");
-	texturas[0] = loadTexture(image);
-	delete image;
 }
 
 
@@ -1188,6 +1451,7 @@ void __fastcall TGui::Init(int main_window) {
     new GLUI_Checkbox( obj_panel, "Modo Alambrico", &escena.wireframe, WIREFRAME_ID, controlCallback );
     new GLUI_Checkbox( obj_panel, "Z Buffer", &escena.z_buffer, 1, controlCallback );
     new GLUI_Checkbox( obj_panel, "Culling", &escena.culling, 1, controlCallback );
+    new GLUI_Checkbox( obj_panel, "Texturas", &escena.textura, 1, controlCallback );
 
     new GLUI_StaticText( obj_panel, "" );
     new GLUI_StaticText( obj_panel, "Factor Camara Movimiento" );
@@ -1447,7 +1711,47 @@ void __fastcall TGui::ControlCallback( int control )
     escena.seleccion = escena.ultimoSelec;
 
     if(escena.camaraSeguimiento)
+    {
+        /*
+        //Obtenemos el coche
+        TPrimitiva *cam = NULL;
+        cam = escena.GetCar(escena.seleccion);
+
+        //Situamos camara detrás del coche
+        if(cam)
+        {
+
+
+            float angulo = (cam->ry*PI)/180.0;
+
+            float rot[16];
+            glMatrixMode(GL_MODELVIEW);
+            glPushMatrix();
+            glLoadIdentity();
+
+            glRotated(-cam->ry-180, 0, 1, 0);
+            glGetFloatv(GL_MODELVIEW_MATRIX, rot);
+            for(int i=0; i<16; i++)
+            if(escena.view_rotate[i]!=rot[i])
+                    escena.view_rotate[i]=rot[i];
+
+            escena.view_position[0] = cam->tx - 20 * sin(angulo);
+            escena.view_position[1] = cam->ty - 5;
+            escena.view_position[2] = cam->tz - 20 * cos(angulo);
+
+
+
+
+            //gluLookAt(cam->tx-20*sin(angulo),cam->ty+10,cam->tz-20*cos(angulo),cam->tx,cam->ty+5,cam->tz,0,1,0);
+
+            glPopMatrix();
+            glutPostRedisplay();
+        }
+        */
         escena.camaraSeguimiento=0;
+        escena.seleccion=0;
+    }
+
     else{
         if(escena.seleccion != 0)
         {
@@ -1461,7 +1765,25 @@ void __fastcall TGui::ControlCallback( int control )
         escena.seleccion = escena.ultimoSelec;
 
         if(escena.vistaAerea)
+        {
+            /*
+            //Obtenemos el coche
+            TPrimitiva *cam = NULL;
+            cam = escena.GetCar(escena.seleccion);
+
+            //Situamos camara detrás del coche
+            if(cam)
+            {
+                float angulo = (cam->ry*PI)/180.0;
+                glMatrixMode(GL_MODELVIEW);
+                glLoadIdentity();
+                //PosCamX,PosCamY,PosCamZ,  DondeMiraX,DondeMiraY,DondeMiraZ,   0,1,0(direccion arriba camara)
+                gluLookAt(cam->tx-20*sin(angulo),cam->ty+10,cam->tz-20*cos(angulo),cam->tx,cam->ty+5,cam->tz,0,1,0);
+            }*/
+
             escena.vistaAerea=0;
+            escena.seleccion=0;
+        }
         else{
             if(escena.seleccion != 0)
             {

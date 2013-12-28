@@ -261,16 +261,16 @@ int main(int argc, char* argv[])
     farola_calle2->tz = -49;
     farola_calle2->rz = 180;
 
-    casa0->tx = -73;
-    casa0->tz = -25;
+    casa0->tx = -74.9;
+    casa0->tz = -24.8;
     casa0->ry = 90;
 
-    casa1->tx = 14;
+    casa1->tx = 15;
     casa1->tz = 100;
     casa1->ry = -90;
 
-    casa2->tx = 65;
-    casa2->tz = 10;
+    casa2->tx = 63.6;
+    casa2->tz = 9.9;
 
 //Añadimos objetos
     escena.AddObject(suelo);
