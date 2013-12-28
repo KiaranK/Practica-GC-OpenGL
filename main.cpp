@@ -167,12 +167,40 @@ int main(int argc, char* argv[])
     TPrimitiva *suelo = new TPrimitiva(SUELO_ID, SUELO_ID);
 
     TPrimitiva *carrLarga1 = new TPrimitiva(CARRETERA_LARGA_ID, CARRETERA_LARGA_ID);
+    TPrimitiva *carrLarga2 = new TPrimitiva(CARRETERA_LARGA_ID, CARRETERA_LARGA_ID);
+
     TPrimitiva *carrCorta1 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
     TPrimitiva *carrCorta2 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta3 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta4 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta5 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta6 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta7 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta8 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta9 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta10 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta11 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta12 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta13 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta14 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
+    TPrimitiva *carrCorta15 = new TPrimitiva(CARRETERA_ID, CARRETERA_ID);
 
     TPrimitiva *casa0 = new TPrimitiva(CASA_ID, CASA_ID);
 	TPrimitiva *casa1 = new TPrimitiva(CASA_ID, CASA_ID);
 	TPrimitiva *casa2 = new TPrimitiva(CASA_ID, CASA_ID);
+	TPrimitiva *casa3 = new TPrimitiva(CASA_ID, CASA_ID);
+	TPrimitiva *casa4 = new TPrimitiva(CASA_ID, CASA_ID);
+	TPrimitiva *casa5 = new TPrimitiva(CASA_ID, CASA_ID);
+    TPrimitiva *casa6 = new TPrimitiva(CASA_ID, CASA_ID);
+    TPrimitiva *casa7 = new TPrimitiva(CASA_ID, CASA_ID);
+    TPrimitiva *casa8 = new TPrimitiva(CASA_ID, CASA_ID);
+    TPrimitiva *casa9 = new TPrimitiva(CASA_ID, CASA_ID);
+    TPrimitiva *casa10 = new TPrimitiva(CASA_ID, CASA_ID);
+    TPrimitiva *casa11 = new TPrimitiva(CASA_ID, CASA_ID);
+    TPrimitiva *casa12 = new TPrimitiva(CASA_ID, CASA_ID);
+    TPrimitiva *casa13 = new TPrimitiva(CASA_ID, CASA_ID);
+    TPrimitiva *casa14 = new TPrimitiva(CASA_ID, CASA_ID);
+    TPrimitiva *casa15 = new TPrimitiva(CASA_ID, CASA_ID);
 
     TPrimitiva *car1 = new TPrimitiva(COCHE_ID*1, COCHE_ID);
 
@@ -210,13 +238,70 @@ int main(int argc, char* argv[])
     ladera_baja1->tx = 65;
     ladera_baja1->tz = 65;
 
-    carrCorta1->tx = 35;
-    carrCorta1->tz = 25;
-    carrCorta1->rz = 0;
 
+    carrLarga2->tx = 129.5;
+    carrLarga2->tz = 62;
+
+//derecha
+    carrCorta1->tx = 36;
+    carrCorta1->tz = 25;
+    carrCorta1->rz = 0;     //en horizontal
+
+    carrCorta3->tx = 36;
+    carrCorta3->tz = 110;
+    carrCorta3->rz = 0;
+
+    carrCorta5->tx = 95;
+    carrCorta5->tz = 110;
+    carrCorta5->rz = 0;
+
+    carrCorta7->tx = 60;
+    carrCorta7->tz = 141.3;
+
+    carrCorta9->tx = 24.5;
+    carrCorta9->tz = 166;
+    carrCorta9->ty = 0.03;
+    carrCorta9->rz = 0;
+
+    carrCorta11->tx = 95;
+    carrCorta11->tz = 166;
+    carrCorta11->ty = 0.03;
+    carrCorta11->rz = 0;
+
+    carrCorta10->tz = 140;
+
+    carrCorta12->tx = 95;
+    carrCorta12->tz = 25;
+    carrCorta12->ty = 0.03;
+    carrCorta12->rz = 0;
+
+//izquierda
     carrCorta2->tx = -35;
     carrCorta2->tz = -25;
     carrCorta2->rz = 0;
+
+    carrCorta4->tx = -35;
+    carrCorta4->tz = 48;
+    carrCorta4->rz = 0;
+
+    carrCorta6->tx = -59.65;
+    carrCorta6->tz = 11.3;
+
+    carrCorta8->tx = -35;
+    carrCorta8->tz = 110;
+    carrCorta8->rz = 0;
+
+    carrCorta13->tx = -59.65;
+    carrCorta13->tz = 135;
+    carrCorta13->ty = 0.025;
+
+    carrCorta14->tx = -59.65;
+    carrCorta14->tz = 81;
+
+    carrCorta15->tx = -35;
+    carrCorta15->tz = 166;
+    carrCorta15->rz = 0;
+    carrCorta15->ty = 0.027;
 
 
     //Farolas (carretera principal)
@@ -261,27 +346,92 @@ int main(int argc, char* argv[])
     farola_calle2->tz = -49;
     farola_calle2->rz = 180;
 
+
     casa0->tx = -74.9;
-    casa0->tz = -24.8;
+    casa0->tz = -10;
     casa0->ry = 90;
 
+    casa6->tx = -74.9;
+    casa6->tz = 30;
+    casa6->ry = 90;
+
+    casa7->tx = -74.9;
+    casa7->tz = 66;
+    casa7->ry = 90;
+
+    casa8->tx = -74.9;
+    casa8->tz = 90;
+    casa8->ry = 90;
+
+    casa9->tx = -74.9;
+    casa9->tz = 140;
+    casa9->ry = 90;
+
+
+
     casa1->tx = 15;
-    casa1->tz = 100;
+    casa1->tz = 85;
     casa1->ry = -90;
 
-    casa2->tx = 63.6;
+    casa2->tx = 63.6; //mira al revés que la camara
     casa2->tz = 9.9;
+
+    casa3->tx = 25;
+    casa3->tz = 9.9;
+
+    casa4->tx = 35;
+    casa4->tz = 95;
+
+    casa5->tx = 45;
+    casa5->tz = 140;
+    casa5->ry = 90;    //mira hacia el mismo sitio donde mira la camara(inicialmente)
+
+    casa10->tx = -30;
+    casa10->tz = 181.1;
+    casa10->ry = 180;
+
+    casa11->tx = 30;
+    casa11->tz = 181.1;
+    casa11->ry = 180;
+
 
 //Añadimos objetos
     escena.AddObject(suelo);
 
     escena.AddObject(carrLarga1);
+    escena.AddObject(carrLarga2);
     escena.AddObject(carrCorta1);
     escena.AddObject(carrCorta2);
+    escena.AddObject(carrCorta3);
+    escena.AddObject(carrCorta4);
+    escena.AddObject(carrCorta5);
+    escena.AddObject(carrCorta6);
+    escena.AddObject(carrCorta7);
+    escena.AddObject(carrCorta8);
+    escena.AddObject(carrCorta9);
+    escena.AddObject(carrCorta10);
+    escena.AddObject(carrCorta11);
+    escena.AddObject(carrCorta12);
+    escena.AddObject(carrCorta13);
+    escena.AddObject(carrCorta14);
+    escena.AddObject(carrCorta15);
 
     escena.AddObject(casa0);
     escena.AddObject(casa1);
     escena.AddObject(casa2);
+    escena.AddObject(casa3);
+    escena.AddObject(casa4);
+    escena.AddObject(casa5);
+    escena.AddObject(casa6);
+    escena.AddObject(casa7);
+    escena.AddObject(casa8);
+    escena.AddObject(casa9);
+    escena.AddObject(casa10);
+    escena.AddObject(casa11);
+    escena.AddObject(casa12);
+    escena.AddObject(casa13);
+    escena.AddObject(casa14);
+    escena.AddObject(casa15);
 
     escena.AddObject(farola0);
     escena.AddObject(farola1);

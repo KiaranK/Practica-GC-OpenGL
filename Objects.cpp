@@ -350,7 +350,7 @@ TPrimitiva::TPrimitiva(int DL, int t)
 		case COCHE_ID: { // Creación del coche
 
             tx = 0;
-		    ty = 0.25;
+		    ty = 0.31;
 		    tz = 0;
 		    v = 0;
 
@@ -485,7 +485,7 @@ TPrimitiva::TPrimitiva(int DL, int t)
 		case CASA_ID: { // Creación del coche
 
             tx = tz = 0;
-            ty = 0.09;
+            ty = 0.05;
 
             //************************ Cargar modelos ***********************************
             int num_vertices = 0;
