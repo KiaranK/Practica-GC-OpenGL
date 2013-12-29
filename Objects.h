@@ -73,7 +73,9 @@
 #define WIREFRAME_ID         410
 #define V_AEREA              411
 #define V_SEGUIMIENTO        412
-
+#define ZBUFFER_ID           413
+#define CULLING_ID           414
+#define V_PRIMERAPERSONA     415
 //************************************************************** Clase TPrimtiva
 
 class TPrimitiva
@@ -108,19 +110,23 @@ public: // Atributos
 		int   	seleccion;   	// Objeto seleccionado, 0=ninguno
         int		num_objects;    // Número de objetos (excepto coches)
         int     num_cars;       // Número de coches
+        int     num_floors;       // Número de coches
 
         TPrimitiva  *cars[10];
         TPrimitiva  *objects[150];
+        TPrimitiva  *floors[50];
 
         int sombra;
         int sentido;
-        int perspectiva;
         int luzAmbiente;
         int camaraSeguimiento;
         int vistaAerea;
+        int primeraPersona;
         float factorMovCam;
         float cuantaLuzAmbiente;
         int ultimoSelec;
+        int reflejo;
+        int tipoVista;
 
         //variables de estado
         int show_car;
@@ -175,9 +181,11 @@ public: // Métodos
 		void __fastcall Render();
 		void __fastcall RenderCars(bool reflejo=false);
 		void __fastcall RenderObjects(bool reflejo=false);
+		void __fastcall RenderFloors(bool reflejo=false);
 
 		void __fastcall AddCar(TPrimitiva *car);
 		void __fastcall AddObject(TPrimitiva *object);
+		void __fastcall AddFloor(TPrimitiva *object);
 
 		TPrimitiva __fastcall *GetCar(int id);
 

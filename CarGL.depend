@@ -133,14 +133,14 @@
 	<stdio.h>
 	<malloc.h>
 
-1388247575 source:c:\gc_practica_open_gl\main.cpp
+1388348056 source:c:\gc_practica_open_gl\main.cpp
 	"Objects.h"
 	<GL\glui.h>
 
-1388177743 c:\gc_practica_open_gl\objects.h
+1388324878 c:\gc_practica_open_gl\objects.h
 	<GL\glui.h>
 
-1388247397 source:c:\gc_practica_open_gl\objects.cpp
+1388350394 source:c:\gc_practica_open_gl\objects.cpp
 	"Objects.h"
 	<GL/glui.h>
 	"load3ds.c"

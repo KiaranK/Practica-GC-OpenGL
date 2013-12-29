@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="Objects.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="10284" topLine="322" />
+	<File name="Objects.cpp" open="1" top="1" tabpos="2">
+		<Cursor position="32797" topLine="905" />
 	</File>
-	<File name="Objects.h" open="1" top="0" tabpos="2">
-		<Cursor position="4482" topLine="133" />
+	<File name="Objects.h" open="1" top="0" tabpos="3">
+		<Cursor position="4977" topLine="155" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="7149" topLine="252" />
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="11256" topLine="393" />
 	</File>
 </CodeBlocks_layout_file>

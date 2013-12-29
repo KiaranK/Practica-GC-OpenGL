@@ -42,10 +42,51 @@ void Keyboard(unsigned char Key, int x, int y)
             exit(0);
             break;
 
+        case 'O':
+        case 'o':
+            //Como no se ve bien, desactivamos la vista Ortog para PrimeraPersona y VistaAerea
+            if(escena.primeraPersona==0 && escena.vistaAerea==0)
+            {
+                escena.tipoVista=1;
+                gui.Reshape(x,y);//Paralela
+            }
+
+            break;
+
+        case 'P':
+        case 'p':
+            escena.tipoVista=0;
+            gui.Reshape(x,y);//Perspectiva
+            break;
+
+        //Teclas para la rotacion
+
+        case 'x':
+        case 'X':
+            escena.rotacionX=1;
+            escena.rotacionY=0;
+            escena.rotacionZ=0;
+        break;
+
+        case 'y':
+        case 'Y':
+            escena.rotacionX=0;
+            escena.rotacionY=1;
+            escena.rotacionZ=0;
+        break;
+
+        case 'z':
+        case 'Z':
+            escena.rotacionX=0;
+            escena.rotacionY=0;
+            escena.rotacionZ=1;
+        break;
     }
 
     glutPostRedisplay();
 }
+
+
 
 /**************************************** mySpecialKey() *************/
 //Teclas que no tienen codigo ASCI asociado
@@ -74,27 +115,6 @@ static void SpecialKey(int key, int x, int y)
                     car->anguloRuedas -= 1;
                 break;
         }
-
-        /*switch (key)
-        {
-            case GLUT_KEY_UP:   // El coche avanza
-                car->rr+=20;         //Rotamos rueda
-                car->tz += 0.15;    //Avanzamos coche
-                break;
-            case GLUT_KEY_DOWN:   // El coche retrocede
-                car->rr-=20;
-                car->tz -= 0.15;
-                break;
-
-            case GLUT_KEY_LEFT:   // Giramos ruedas
-                if(car->anguloRuedas < 25)
-                    car->anguloRuedas += 1;
-                break;
-            case GLUT_KEY_RIGHT:
-                if(car->anguloRuedas > -25)
-                    car->anguloRuedas -= 1;
-                break;
-        }*/
 
         glutPostRedisplay();
 
@@ -398,23 +418,23 @@ int main(int argc, char* argv[])
 //Añadimos objetos
     escena.AddObject(suelo);
 
-    escena.AddObject(carrLarga1);
-    escena.AddObject(carrLarga2);
-    escena.AddObject(carrCorta1);
-    escena.AddObject(carrCorta2);
-    escena.AddObject(carrCorta3);
-    escena.AddObject(carrCorta4);
-    escena.AddObject(carrCorta5);
-    escena.AddObject(carrCorta6);
-    escena.AddObject(carrCorta7);
-    escena.AddObject(carrCorta8);
-    escena.AddObject(carrCorta9);
-    escena.AddObject(carrCorta10);
-    escena.AddObject(carrCorta11);
-    escena.AddObject(carrCorta12);
-    escena.AddObject(carrCorta13);
-    escena.AddObject(carrCorta14);
-    escena.AddObject(carrCorta15);
+    escena.AddFloor(carrLarga1);
+    escena.AddFloor(carrLarga2);
+    escena.AddFloor(carrCorta1);
+    escena.AddFloor(carrCorta2);
+    escena.AddFloor(carrCorta3);
+    escena.AddFloor(carrCorta4);
+    escena.AddFloor(carrCorta5);
+    escena.AddFloor(carrCorta6);
+    escena.AddFloor(carrCorta7);
+    escena.AddFloor(carrCorta8);
+    escena.AddFloor(carrCorta9);
+    escena.AddFloor(carrCorta10);
+    escena.AddFloor(carrCorta11);
+    escena.AddFloor(carrCorta12);
+    escena.AddFloor(carrCorta13);
+    escena.AddFloor(carrCorta14);
+    escena.AddFloor(carrCorta15);
 
     escena.AddObject(casa0);
     escena.AddObject(casa1);

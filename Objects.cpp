@@ -25,7 +25,7 @@ GLuint texturas[7] = { 0,0,0,0,0,0,0};
 GLfloat light0_ambient_c[4]  = {   0.2f, 0.2f, 0.2f, 1.0f };
 GLfloat light0_diffuse_c[4]  = {   0.6f, 0.6f, 0.6f, 1.0f };
 GLfloat light0_specular_c[4] = {   1.0f, 1.0f, 1.0f, 1.0f };
-GLfloat light0_position_c[4] = { -50.0f, 5.0f, 0.0f, 1.0f };
+GLfloat light0_position_c[4] = { -20.0f, 70.0f, -90.0f, 1.0f };
 
 GLfloat light1_ambient_c[4]  = { 0.2f,   0.2f,  0.2f, 1.0f };
 GLfloat light1_diffuse_c[4]  = { 0.6f,   0.6f,  0.6f, 1.0f };
@@ -35,7 +35,7 @@ GLfloat light1_position_c[4] = { 0.0f, 100.0f, 10.0f, 1.0f };
 GLfloat light2_ambient_c[4]  = { 0.2f,   0.2f,  0.2f, 1.0f };
 GLfloat light2_diffuse_c[4]  = { 0.6f,   0.6f,  0.6f, 1.0f };
 GLfloat light2_specular_c[4] = { 1.0f,   1.0f,  1.0f, 1.0f };
-GLfloat light2_position_c[4] = { 50.0f, 50.0f, 20.0f, 1.0f };
+GLfloat light2_position_c[4] = { 10.0f, 50.0f, 90.0f, 1.0f };
 
 GLfloat mat_ambient_c[4]    = { 0.7f, 0.7f, 0.7f, 1.0f };
 GLfloat mat_diffuse_c[4]    = { 0.8f, 0.8f, 0.8f, 1.0f };
@@ -51,21 +51,30 @@ float view_position_c[3] = { 0.0, -2.0, -25.0 };
 GLfloat sinMaterial[] = { 0.0, 0.0, 0.0, 1.0 };
 GLfloat ambMedio[] = { 0.7, 0.7, 0.7, 1.0 };
 GLfloat ambMarron[] = { 0.8, 0.8, 0.2, 1.0 };
-GLfloat dif[] = { 0.1, 0.5, 0.8, 1.0 };
+GLfloat dif[] = { 0.7, 0.7, 0.7, 1.0 };
+GLfloat espMedio[] = { 0.5, 0.5, 0.5, 1.0 };
 GLfloat esp[] = { 1.0, 1.0, 1.0, 1.0 };
 GLfloat noBrillo[] = { 0.0 };
 GLfloat bajoBrillo[] = { 12.0 };
 GLfloat medioBrillo[] = { 50.0 };
 GLfloat altoBrillo[] = { 100.0 };
+
 GLfloat emision[] = {1.0, 1.0, 1.0, 0.9};
+
+
+//CREAR MATERIALES PARA EL COCHE
+GLfloat brilloCoche[] = {0.75 };
+GLfloat lumCoche[] = {25.0 };
+GLfloat difCoche[] = {0.7, 0.7, 0.7, 1.0};
+GLfloat espCoche[] = {1.0, 1.0, 1.0, 1.0};
 
 //Colores
 float color_suelo[4] = {0.15,1,0.15, 1};
 float color_blanco[4] = {1.0,1.0,1.0, 1.0};
 float colores_c[2][4] = { {0.8, 0.5, 0.0, 1.0}, {0.35, 0.35, 0.35, 1.0}}; //Coche, rueda
-float colores_farola[3][4] = {{0.75, 0.75, 0.75, 1.0},{0.5, 0.5, 0.5, 1.0},{1.0, 1.0, 1.0, 0.42}}; //Base, capucha, y cristal de la farola
-float colores_carr[4] = {0.8,0.6,0.4, 1.0};
-float colores_carr_claro[4] = {1.0,0.8,0.6, 1.0};
+float colores_farola[3][4] = {{0.6, 0.6, 0.6, 1.0},{0.5, 0.5, 0.5, 1.0},{1.0, 1.0, 1.0, 0.42}}; //Base, capucha, y cristal de la farola
+float colores_carr[4] = {1.0,0.8,0.6, 1.0};
+float colores_carr_claro[4] = {0.5,0.4,0.1, 1.0};
 float colores_casa[4][4] = {
                                 {1.0 , 1.0, 1.0, 1.0},      //Casa
                                 {1.0, 0.15, 0.0, 1.0},      //Tejado
@@ -289,7 +298,7 @@ TPrimitiva::TPrimitiva(int DL, int t)
 		    tx = 0;
 		    ty = 0.02;
 		    tz = 0;
-		    rx = -90;
+		    rx = 90;
 		    ry = 0;
             rz = 90;
 
@@ -320,7 +329,7 @@ TPrimitiva::TPrimitiva(int DL, int t)
 		    tx = 0;
 		    ty = 0.04;
 		    tz = 0;
-		    rx = -90;
+		    rx = 90;
 		    ry = 0;
             rz = 90;
 
@@ -672,7 +681,8 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         }
 
 
-        case CARRETERA_ID: {
+        case CARRETERA_ID:
+        case CARRETERA_LARGA_ID:{
 
             glPushMatrix();
             glTranslated(tx, ty, tz);
@@ -684,59 +694,47 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             {
                 glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
                 glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
-                glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
-                glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
+                glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
+                glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
+                glMaterialfv(GL_FRONT, GL_SHININESS, bajoBrillo);
                 glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
 
-
-                if(escena.textura)
+                if(reflejo)
                 {
-                    glColor4fv(colores_carr_claro);
-                    glEnable(GL_TEXTURE_2D);
-                    glBindTexture(GL_TEXTURE_2D, texturas[0]);
+                    if(escena.textura)
+                    {
+                        glColor4f(colores_carr_claro[0],colores_carr_claro[1],colores_carr_claro[2],0.85f);
+                        glEnable(GL_TEXTURE_2D);
+                        glBindTexture(GL_TEXTURE_2D, texturas[0]);
+                    }
+                    else
+                        glColor4f(colores_carr_claro[0],colores_carr_claro[1],colores_carr_claro[2],0.7f);
+
+                    glEnable(GL_BLEND);									// Enable Blending (Otherwise The Reflected Object Wont Show)
+                    glDisable(GL_LIGHTING);								// Since We Use Blending, We Disable Lighting
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+                    glLoadName(0); //No seleccionable
+                    glCallList(ID);
+                    glDisable(GL_BLEND);
+                    glDisable(GL_TEXTURE_2D);
+                    glEnable(GL_LIGHTING);								// Enable Lighting
+
                 }
-                else
-                    glColor4fv(colores_carr);
+                else{
+                    if(escena.textura)
+                    {
+                        glColor4fv(colores_carr_claro);
+                        glEnable(GL_TEXTURE_2D);
+                        glBindTexture(GL_TEXTURE_2D, texturas[0]);
+                    }
+                    else
+                        glColor4fv(colores_carr_claro);
 
-                glLoadName(0); //No seleccionable
-                glCallList(ID);
-                glDisable(GL_TEXTURE_2D);
-            }
-
-            glPopMatrix();
-            break;
-        }
-
-        case CARRETERA_LARGA_ID: {
-
-            glPushMatrix();
-            glTranslated(tx, ty, tz);
-            glRotated(rx, 1, 0, 0);
-            glRotated(ry, 0, 1, 0);
-            glRotated(rz, 0, 0, 1);
-
-            if (escena.show_road)
-            {
-                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
-                glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
-                glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
-                glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
-
-                if(escena.textura)
-                {
-                    glColor4fv(colores_carr_claro);
-                    glEnable(GL_TEXTURE_2D);
-                    glBindTexture(GL_TEXTURE_2D, texturas[0]);
+                    glLoadName(0); //No seleccionable
+                    glCallList(ID);
+                    glDisable(GL_TEXTURE_2D);
                 }
-                else
-                    glColor4fv(colores_carr);
-
-                glLoadName(0); //No seleccionable
-                glCallList(ID);
-                glDisable(GL_TEXTURE_2D);
             }
 
             glPopMatrix();
@@ -783,40 +781,6 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 }
             }
 
-
-            if (escena.show_car)
-            {
-
-                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glMaterialfv(GL_FRONT, GL_AMBIENT, ambMedio);
-                glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
-                glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
-                glMaterialfv(GL_FRONT, GL_SHININESS, altoBrillo);
-                glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
-
-                glColor4fv(colores_c[0]);
-                glLoadName(ID);
-                glCallList(ID);
-
-                if(seleccion==ID)
-                {
-                    glPushMatrix();
-                    glTranslated(0, -0.17, 1.27);
-                    glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
-                    glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
-                    glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
-                    glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
-                    glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
-
-                    glEnable(GL_BLEND);
-                    glColor4f(0.0,0.0,1.0,0.9);
-                    glBlendFunc(GL_SRC_ALPHA,GL_ONE);
-                    glCallList(ID+MARCADOR);
-                    glDisable(GL_BLEND);
-                    glPopMatrix();
-                }
-            }
-
             if (escena.show_wheels)
             {
                 glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
@@ -858,9 +822,55 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                     glCallList(ID+RUEDA);
                 glPopMatrix();
             }
+
+
+            if (escena.show_car)
+            {
+                glEnable(GL_BLEND);
+                glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+
+                if(seleccion==ID)
+                {
+                    glPushMatrix();
+                    glTranslated(0, -0.17, 1.27);
+                    glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
+                    glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
+                    glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
+                    glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
+                    glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+
+                    glColor4f(0.03,0.18,1.0,0.6);
+                    glCallList(ID+MARCADOR);
+                    glPopMatrix();
+                }
+
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
+                glMaterialfv(GL_FRONT, GL_DIFFUSE, difCoche);
+
+                float v[] = { espCoche[0], espCoche[1],
+                                espCoche[2], espCoche[3] };
+
+                v[0] *= brilloCoche[0];
+                v[1] *= brilloCoche[0];
+                v[2] *= brilloCoche[0];
+
+                glMaterialfv(GL_FRONT, GL_SPECULAR, v);
+                glMaterialfv(GL_FRONT, GL_SHININESS, lumCoche);
+                glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+
+                glColor4fv(colores_c[0]);
+                glLoadName(ID);
+                glCallList(ID);
+            }
+
+            glDisable(GL_BLEND);
             glPopMatrix();
+
+
             break;
         }
+
 
         /************************* FAROLA */
         case FAROLA_ID: {
@@ -880,7 +890,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
                 glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
                 glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
-                glMaterialfv(GL_FRONT, GL_SHININESS, altoBrillo);
+                glMaterialfv(GL_FRONT, GL_SHININESS, medioBrillo);
                 glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
                 glColor4fv(colores_farola[0]);
                 glLoadName(0);
@@ -907,7 +917,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 glMaterialfv(GL_FRONT, GL_SHININESS, medioBrillo);
                 glMaterialfv(GL_FRONT, GL_EMISSION, emision);
                 glColor4fv(colores_farola[2]);
-                glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+                glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
                 glLoadName(0);
                 glCallList(ID+FAROLA_CRISTAL);
                 glDisable(GL_BLEND);
@@ -1087,12 +1097,13 @@ TEscena::TEscena() {
 
     raton=0;
     rotacionX=0;
-    rotacionY=1;
+    rotacionY=0;
     rotacionZ=0;
 
     seleccion = 0;
     num_objects = 0;
     num_cars = 0;
+    num_floors = 0;
 
     show_car = 1;
     show_wheels = 1;
@@ -1102,6 +1113,7 @@ TEscena::TEscena() {
     show_farola_capucha = 1;
     show_charco = 1;
     show_casa = 1;
+    tipoVista = 0;
 
     // live variables usadas por GLUI en TGui
     textura=1;
@@ -1110,10 +1122,10 @@ TEscena::TEscena() {
     culling = 0;
     sombra=1;
     sentido=0;
-    perspectiva=1;
     luzAmbiente=1;
     camaraSeguimiento=0;
     vistaAerea=0;
+    primeraPersona=0;
     factorMovCam=0.7;
     cuantaLuzAmbiente = 0.8;
 
@@ -1164,9 +1176,16 @@ void __fastcall TEscena::InitGL()
 
     glMatrixMode(GL_MODELVIEW);
 
+    glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
+	glClearColor(0.2f, 0.5f, 1.0f, 1.0f);				// Background
+	glClearDepth(1.0f);									// Depth Buffer Setup
+	glClearStencil(0);									// Clear The Stencil Buffer To 0
+	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
+	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+
     glEnable(GL_LIGHTING);
     glEnable(GL_NORMALIZE);
-    glShadeModel(GL_SMOOTH); //o GL_FLAT
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); //o GL_LINE
 
     glEnable(GL_LIGHT0);
@@ -1182,10 +1201,10 @@ void __fastcall TEscena::InitGL()
     glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
 
     glEnable(GL_LIGHT2);
-    glLightfv(GL_LIGHT2, GL_AMBIENT,  light1_ambient);
-    glLightfv(GL_LIGHT2, GL_DIFFUSE,  light1_diffuse);
-    glLightfv(GL_LIGHT2, GL_SPECULAR, light1_specular);
-    glLightfv(GL_LIGHT2, GL_POSITION, light1_position);
+    glLightfv(GL_LIGHT2, GL_AMBIENT,  light2_ambient);
+    glLightfv(GL_LIGHT2, GL_DIFFUSE,  light2_diffuse);
+    glLightfv(GL_LIGHT2, GL_SPECULAR, light2_specular);
+    glLightfv(GL_LIGHT2, GL_POSITION, light2_position);
 
     glEnable(GL_COLOR_MATERIAL);
     glMaterialfv(GL_FRONT, GL_AMBIENT,   mat_ambient);
@@ -1193,9 +1212,21 @@ void __fastcall TEscena::InitGL()
     glMaterialfv(GL_FRONT, GL_SPECULAR,  mat_specular);
     glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
 
-    // Habilita el z_buffer
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    GLfloat arrLuzAmbiente[4];
+    GLfloat arrLuzAmbienteDividido[4];
+
+    for(int i = 0; i< 4; i++)
+    {
+        arrLuzAmbiente[i]=escena.cuantaLuzAmbiente;
+        arrLuzAmbienteDividido[i]=escena.cuantaLuzAmbiente/5;
+    }
+
+
+    //glClearColor(0.0, 0.5, 1.0, 1.0);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, arrLuzAmbienteDividido);
+    glLightfv(GL_LIGHT1, GL_AMBIENT, arrLuzAmbienteDividido );
+    glLightfv(GL_LIGHT2, GL_AMBIENT, arrLuzAmbienteDividido );
+    glMaterialfv(GL_FRONT, GL_AMBIENT, arrLuzAmbiente);
 
 }
 
@@ -1214,6 +1245,12 @@ void __fastcall TEscena::AddObject(TPrimitiva *object)
 {
     objects[num_objects] = object;
     num_objects++;
+}
+
+void __fastcall TEscena::AddFloor(TPrimitiva *object)
+{
+    floors[num_floors] = object;
+    num_floors++;
 }
 
 /******************** TPrimitiva *TEscena::GetCar(int id) ********************/
@@ -1253,38 +1290,20 @@ void __fastcall TEscena::RenderObjects(bool reflejo) {
     }
 }
 
+void __fastcall TEscena::RenderFloors(bool reflejo) {
+
+    for (int i=0; i<num_floors; i++)
+    {
+        floors[i]->Render(seleccion, reflejo);
+    }
+}
+
 /***************************************** TEscena::Render() *****************/
 
 void __fastcall TEscena::Render()
 {
-    if(escena.luzAmbiente)
-    {
-        GLfloat arrLuzAmbiente[4];
-        GLfloat arrLuzAmbienteDividido[4];
 
-        for(int i = 0; i< 4; i++)
-        {
-            arrLuzAmbiente[i]=escena.cuantaLuzAmbiente;
-            arrLuzAmbienteDividido[i]=cuantaLuzAmbiente/5;
-        }
-
-
-        glClearColor(0.0, 0.5, 1.0, 1.0);
-        glLightfv(GL_LIGHT0, GL_AMBIENT, arrLuzAmbienteDividido);
-        glLightfv(GL_LIGHT1, GL_AMBIENT, arrLuzAmbienteDividido );
-        glLightfv(GL_LIGHT2, GL_AMBIENT, arrLuzAmbienteDividido );
-        glMaterialfv(GL_FRONT, GL_AMBIENT, arrLuzAmbiente);
-   }
-    else
-    {
-        glClearColor(0.0, 0.0, 0.0, 1.0);
-        glLightfv(GL_LIGHT0, GL_AMBIENT, sinMaterial );
-        glLightfv(GL_LIGHT1, GL_AMBIENT, sinMaterial );
-        glLightfv(GL_LIGHT2, GL_AMBIENT, sinMaterial );
-        glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
-    }
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
     // Clip Plane Equations para la reflexion
 	double eqr[] = {0.0f,-1.0f, 0.0f, 0.0f};
@@ -1332,14 +1351,69 @@ void __fastcall TEscena::Render()
         }
     }
 
-    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
-    glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
+    else if(escena.primeraPersona == 1)
+    {
+        //Obtenemos el coche
+        TPrimitiva *cam = NULL;
+        cam = GetCar(seleccion);
 
+        //Situamos camara detrás del coche
+        if(cam)
+        {
+            float angulo = (cam->ry*PI)/180.0;
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+            //PosCamX,PosCamY,PosCamZ,  DondeMiraX,DondeMiraY,DondeMiraZ,   0,1,0(direccion arriba camara)
+            gluLookAt(cam->tx+sin(angulo),cam->ty+2,cam->tz+cos(angulo),cam->tx+5*sin(angulo),cam->ty+2,cam->tz+5*cos(angulo),0,1,0);
+        }
+    }
+
+    if(escena.reflejo)
+    {
+        glColorMask(0,0,0,0);								// Set Color Mask
+        glEnable(GL_STENCIL_TEST);							// Enable Stencil Buffer For "marking" The Floor
+        glStencilFunc(GL_ALWAYS, 1, 1);						// Always Passes, 1 Bit Plane, 1 As Mask
+        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);			// We Set The Stencil Buffer To 1 Where We Draw Any Polygon
+                                                            // Keep If Test Fails, Keep If Test Passes But Buffer Test Fails
+                                                            // Replace If Test Passes
+        glDisable(GL_DEPTH_TEST);
+        RenderFloors(0);
+
+        glEnable(GL_DEPTH_TEST);                        // Enable Depth Testing
+        glColorMask(1,1,1,1);                           // Set Color Mask to TRUE, TRUE, TRUE, TRUE
+        glStencilFunc(GL_EQUAL, 1, 1);                      // We Draw Only Where The Stencil Is 1
+                                            // (I.E. Where The Floor Was Drawn)
+        glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);                 // Don't Change The Stencil Buffer
+        glEnable(GL_CLIP_PLANE0);
+        glClipPlane(GL_CLIP_PLANE0, eqr);					// Equation For Reflected Objects
+
+        glPushMatrix();										// Push The Matrix Onto The Stack
+            glScalef(1.0f, -1.0f, 1.0f);					// Mirror Y Axis
+            glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+            glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
+            glLightfv(GL_LIGHT2, GL_POSITION, light2_position);
+            glTranslated(0,-0.18,0);
+            RenderCars(seleccion);
+			RenderObjects(seleccion);
+        glPopMatrix();									// Pop The Matrix Off The Stack
+
+        glDisable(GL_CLIP_PLANE0);							// Disable Clip Plane For Drawing The Floor
+        glDisable(GL_STENCIL_TEST);							// We Don't Need The Stencil Buffer Any More (Disable)
+        glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+        glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
+        glLightfv(GL_LIGHT2, GL_POSITION, light2_position);
+
+        RenderFloors(1);										// Draw The Floor To The Screen
+	}
+    else
+        RenderFloors(0);
+
+
+    RenderCars(seleccion);
     // Dibujar carretera y objetos
     RenderObjects(seleccion);
 
-    // Dibujar coches
-    RenderCars(seleccion);
+
 
     glutSwapBuffers();  //Intercambia buffers (recordar que estamos usando doble buffer)
 }
@@ -1422,9 +1496,9 @@ TGui::TGui()
     light0_enabled = 1;
     light1_enabled = 1;
     light2_enabled = 1;
-    light0_intensity = 0.6;
-    light1_intensity = 0.6;
-    light2_intensity = 0.6;
+    light0_intensity = 1.0;
+    light1_intensity = 1.0;
+    light2_intensity = 1.0;
 }
 
 void controlCallback(int control)
@@ -1449,21 +1523,50 @@ void __fastcall TGui::Init(int main_window) {
     /***** Control para las propiedades de escena *****/
 
     new GLUI_Checkbox( obj_panel, "Modo Alambrico", &escena.wireframe, WIREFRAME_ID, controlCallback );
-    new GLUI_Checkbox( obj_panel, "Z Buffer", &escena.z_buffer, 1, controlCallback );
-    new GLUI_Checkbox( obj_panel, "Culling", &escena.culling, 1, controlCallback );
+    new GLUI_Checkbox( obj_panel, "Z Buffer", &escena.z_buffer, ZBUFFER_ID, controlCallback );
+    new GLUI_Checkbox( obj_panel, "Culling", &escena.culling, CULLING_ID, controlCallback );
+    new GLUI_Checkbox( obj_panel, "Sentido AntiHorario", &escena.sentido, 1, controlCallback );
+    new GLUI_Checkbox( obj_panel, "Sombra Suave", &escena.sombra, 1, controlCallback );
     new GLUI_Checkbox( obj_panel, "Texturas", &escena.textura, 1, controlCallback );
+    new GLUI_Checkbox( obj_panel, "Reflejo", &escena.reflejo, 1, controlCallback );
 
     new GLUI_StaticText( obj_panel, "" );
     new GLUI_StaticText( obj_panel, "Factor Camara Movimiento" );
     sb = new GLUI_Scrollbar( obj_panel, "Facto MovCam",GLUI_SCROLL_HORIZONTAL,
                             &escena.factorMovCam,1,controlCallback);
-    sb->set_float_limits(0.1,1);
+    sb->set_float_limits(0.03,1);
 
     new GLUI_Button( glui, "Vista Seguimiento", V_SEGUIMIENTO, controlCallback );
-    new GLUI_Button( glui, "Vista aerea", V_AEREA, controlCallback );
+    new GLUI_Button( glui, "Primera Persona", V_PRIMERAPERSONA, controlCallback );
+    new GLUI_Button( glui, "Vista Aerea", V_AEREA, controlCallback );
+
+    new GLUI_StaticText( glui, "" );
+
+    GLUI_Rollout *roll_coche = new GLUI_Rollout(glui, "Coche", false );
+
+    GLUI_Panel *color = new GLUI_Panel( roll_coche, "Color" );
+
+    sb = new GLUI_Scrollbar( color, "Rojo",GLUI_SCROLL_HORIZONTAL,
+                            &colores_c[0][0],1,controlCallback);
+    sb->set_float_limits(0,1);
+    sb = new GLUI_Scrollbar( color, "Verde",GLUI_SCROLL_HORIZONTAL,
+                            &colores_c[0][1],1,controlCallback);
+    sb->set_float_limits(0,1);
+    sb = new GLUI_Scrollbar( color, "Azul",GLUI_SCROLL_HORIZONTAL,
+                            &colores_c[0][2],1,controlCallback);
+    sb->set_float_limits(0,1);
+    sb = new GLUI_Scrollbar( color, "Alpha",GLUI_SCROLL_HORIZONTAL,
+                            &colores_c[0][3],1,controlCallback);
+    sb->set_float_limits(0,1);
+
+    GLUI_Panel *brilloC = new GLUI_Panel( roll_coche, "Brillo" );
+
+    sb = new GLUI_Scrollbar( brilloC, "Brillo",GLUI_SCROLL_HORIZONTAL,
+                            &brilloCoche[0],1,controlCallback);
+    sb->set_float_limits(0,1);
+
 
     /******** Añade controles para las luces ********/
-
     // Añade una separación
     new GLUI_StaticText( glui, "" );
 
@@ -1522,16 +1625,6 @@ void __fastcall TGui::Init(int main_window) {
                             &escena.light2_diffuse[2],LIGHT2_INTENSITY_ID,controlCallback);
     sb->set_float_limits(0,1);
 
-    GLUI_Rollout *sentidoCaras = new GLUI_Rollout(glui, "Sentido Caras", true );
-    GLUI_RadioGroup *grupo1 = glui->add_radiogroup_to_panel(sentidoCaras, &escena.sentido, 1, controlCallback);
-    glui->add_radiobutton_to_group( grupo1, "Horario" );
-    glui->add_radiobutton_to_group( grupo1, "AntiHorario" );
-
-    GLUI_Rollout *shaders = new GLUI_Rollout(glui, "Sombreado", true );
-    GLUI_RadioGroup *group1 = glui->add_radiogroup_to_panel(shaders, &escena.sombra, 1, controlCallback);
-    glui->add_radiobutton_to_group( group1, "Plano" );
-    glui->add_radiobutton_to_group( group1, "Suavizado" );
-
     // Añade una separación
     new GLUI_StaticText( glui, "" );
 
@@ -1540,7 +1633,6 @@ void __fastcall TGui::Init(int main_window) {
     new GLUI_Checkbox( options, "Dibujar Coche", &escena.show_car );
     new GLUI_Checkbox( options, "Dibujar Ruedas", &escena.show_wheels );
     new GLUI_Checkbox( options, "Dibujar Carretera", &escena.show_road );
-    new GLUI_Checkbox( options, "Dibujar Charcos", &escena.show_charco);
     new GLUI_Checkbox( options, "Dibujar Farolas", &escena.show_farola_base );
     new GLUI_Checkbox( options, "Dibujar Farolas (cap)", &escena.show_farola_capucha );
 
@@ -1607,6 +1699,7 @@ void __fastcall TGui::ControlCallback( int control )
     else
         glFrontFace(GL_CW);//HORARIO
 
+
     //TIPO DE SOMBREADO
     if(escena.sombra)
         glShadeModel(GL_SMOOTH);//SUAVIZADO
@@ -1614,7 +1707,53 @@ void __fastcall TGui::ControlCallback( int control )
         glShadeModel(GL_FLAT);//PLANO
 
 
-  if ( control == LIGHT0_ENABLED_ID ) {
+    if(escena.luzAmbiente)
+    {
+        GLfloat arrLuzAmbiente[4];
+        GLfloat arrLuzAmbienteDividido[4];
+
+        for(int i = 0; i< 4; i++)
+        {
+            arrLuzAmbiente[i]=escena.cuantaLuzAmbiente;
+            arrLuzAmbienteDividido[i]=escena.cuantaLuzAmbiente/5;
+        }
+
+
+        glClearColor(0.0, 0.5, 1.0, 1.0);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, arrLuzAmbienteDividido);
+        glLightfv(GL_LIGHT1, GL_AMBIENT, arrLuzAmbienteDividido );
+        glLightfv(GL_LIGHT2, GL_AMBIENT, arrLuzAmbienteDividido );
+        glMaterialfv(GL_FRONT, GL_AMBIENT, arrLuzAmbiente);
+   }
+    else
+    {
+        glClearColor(0.0, 0.0, 0.0, 1.0);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, sinMaterial );
+        glLightfv(GL_LIGHT1, GL_AMBIENT, sinMaterial );
+        glLightfv(GL_LIGHT2, GL_AMBIENT, sinMaterial );
+        glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
+    }
+
+
+  if (control == ZBUFFER_ID)
+  {
+    if(escena.z_buffer)
+        glEnable(GL_DEPTH_TEST);
+    else
+        glDisable(GL_DEPTH_TEST);
+  }
+
+  else if (control == CULLING_ID)
+  {
+    if(escena.culling){
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
+    }
+    else
+        glDisable(GL_CULL_FACE);
+  }
+
+  else if ( control == LIGHT0_ENABLED_ID ) {
     if ( light0_enabled ) {
       glEnable( GL_LIGHT0 );
       light0_spinner->enable();
@@ -1688,7 +1827,7 @@ void __fastcall TGui::ControlCallback( int control )
   else if ( control == RESET_ID)
   {
      memcpy(escena.view_position,view_position_c,3*sizeof(float));
-     //memcpy(escena.view_rotate,view_rotate_c,16*sizeof(float));
+     memcpy(escena.view_rotate,view_rotate_c,16*sizeof(float));
      view_rot->reset();
      escena.scale = 1.0;
   }
@@ -1712,51 +1851,16 @@ void __fastcall TGui::ControlCallback( int control )
 
     if(escena.camaraSeguimiento)
     {
-        /*
-        //Obtenemos el coche
-        TPrimitiva *cam = NULL;
-        cam = escena.GetCar(escena.seleccion);
-
-        //Situamos camara detrás del coche
-        if(cam)
-        {
-
-
-            float angulo = (cam->ry*PI)/180.0;
-
-            float rot[16];
-            glMatrixMode(GL_MODELVIEW);
-            glPushMatrix();
-            glLoadIdentity();
-
-            glRotated(-cam->ry-180, 0, 1, 0);
-            glGetFloatv(GL_MODELVIEW_MATRIX, rot);
-            for(int i=0; i<16; i++)
-            if(escena.view_rotate[i]!=rot[i])
-                    escena.view_rotate[i]=rot[i];
-
-            escena.view_position[0] = cam->tx - 20 * sin(angulo);
-            escena.view_position[1] = cam->ty - 5;
-            escena.view_position[2] = cam->tz - 20 * cos(angulo);
-
-
-
-
-            //gluLookAt(cam->tx-20*sin(angulo),cam->ty+10,cam->tz-20*cos(angulo),cam->tx,cam->ty+5,cam->tz,0,1,0);
-
-            glPopMatrix();
-            glutPostRedisplay();
-        }
-        */
         escena.camaraSeguimiento=0;
         escena.seleccion=0;
     }
 
     else{
-        if(escena.seleccion != 0)
+        if(escena.seleccion != 0) //Anulamos las otras vistas
         {
             escena.camaraSeguimiento=1;
             escena.vistaAerea=0;
+            escena.primeraPersona=0;
         }
     }
   }
@@ -1766,28 +1870,36 @@ void __fastcall TGui::ControlCallback( int control )
 
         if(escena.vistaAerea)
         {
-            /*
-            //Obtenemos el coche
-            TPrimitiva *cam = NULL;
-            cam = escena.GetCar(escena.seleccion);
-
-            //Situamos camara detrás del coche
-            if(cam)
-            {
-                float angulo = (cam->ry*PI)/180.0;
-                glMatrixMode(GL_MODELVIEW);
-                glLoadIdentity();
-                //PosCamX,PosCamY,PosCamZ,  DondeMiraX,DondeMiraY,DondeMiraZ,   0,1,0(direccion arriba camara)
-                gluLookAt(cam->tx-20*sin(angulo),cam->ty+10,cam->tz-20*cos(angulo),cam->tx,cam->ty+5,cam->tz,0,1,0);
-            }*/
-
             escena.vistaAerea=0;
+            escena.seleccion=0;
+        }
+        else{
+            //Anulamos las otras vistas
+            if(escena.seleccion != 0)
+            {
+                escena.tipoVista=0;
+                escena.vistaAerea=1;
+                escena.camaraSeguimiento=0;
+                escena.primeraPersona=0;
+            }
+        }
+    }
+
+    else if(control==V_PRIMERAPERSONA)
+    {
+        escena.seleccion = escena.ultimoSelec;
+
+        if(escena.primeraPersona)
+        {
+            escena.primeraPersona=0;
             escena.seleccion=0;
         }
         else{
             if(escena.seleccion != 0)
             {
-                escena.vistaAerea=1;
+                escena.tipoVista=0;
+                escena.primeraPersona=1;
+                escena.vistaAerea=0;
                 escena.camaraSeguimiento=0;
             }
         }
@@ -1828,7 +1940,11 @@ void __fastcall TGui::Reshape( int x, int y )
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45, escena.xy_aspect, 1.0, 1000.0);
+
+    if(escena.tipoVista)
+        glOrtho(-10*escena.xy_aspect,10*escena.xy_aspect, -10, 10, -100, 1000); //PARALELA
+    else
+      gluPerspective(45, escena.xy_aspect, 1.0, 1000.0);//PERSPECTIVA
 
     glutPostRedisplay();
 }
@@ -1839,66 +1955,84 @@ void __fastcall TGui::Motion(int x, int y )
 {
     if(escena.raton==1) //MOVERSE CON RATON
     {
-        if(x > escena.last_x)           //Der
-            escena.view_position[0]+=escena.factorMovCam;
-        else if (x < escena.last_x)     //Izq
-            escena.view_position[0]-=escena.factorMovCam;
-        if(y > escena.last_y)           //Up
-            escena.view_position[1]-=escena.factorMovCam;
-        else if (y < escena.last_y)     //Down
-            escena.view_position[1]+=escena.factorMovCam;
+
+        if(glutGetModifiers()==GLUT_ACTIVE_CTRL)
+        {
+
+        }
+        else
+        {
+            if(x > escena.last_x)           //Der
+                escena.view_position[0]+=escena.factorMovCam;
+            else if (x < escena.last_x)     //Izq
+                escena.view_position[0]-=escena.factorMovCam;
+            if(y > escena.last_y)           //Up
+                escena.view_position[1]-=escena.factorMovCam;
+            else if (y < escena.last_y)     //Down
+                escena.view_position[1]+=escena.factorMovCam;
+        }
     }
-    else if (escena.raton==2) //Eje Z Escala/Mover
+    else if(escena.raton==2)  //MOVIMIENTO EN Z
     {
         if(y < escena.last_y)
-            escena.view_position[2]+=escena.factorMovCam;
+            escena.view_position[2]+=escena.factorMovCam*2;
         else if(y > escena.last_y)
-            escena.view_position[2]-=escena.factorMovCam;
+            escena.view_position[2]-=escena.factorMovCam*2;
     }
-    else if(escena.raton==3) //ROTAR CON RATON
+    else if(escena.raton==3) //ROTAR EN X Y
+    {
+        float rot[16];
+        float rotacion_X = x - escena.last_x;
+        float rotacion_Y = y - escena.last_y;
+        escena.rotacionX += rotacion_X;
+        escena.rotacionY += rotacion_Y;
+
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glLoadIdentity();
+
+        glRotated(escena.rotacionX * escena.factorMovCam, 0, 1, 0);
+        glRotated(escena.rotacionY * escena.factorMovCam, 1, 0, 0);
+
+        glGetFloatv(GL_MODELVIEW_MATRIX, rot);
+
+        for(int i=0; i<16; i++)
+            if(escena.view_rotate[i] != rot[i])
+                escena.view_rotate[i]=rot[i];
+
+        glPopMatrix();
+
+
+    }
+
+    else if(escena.raton==4) //ROTAR EN Z
     {
         float rot[16];
         glMatrixMode(GL_MODELVIEW);
         glPushMatrix();
         glLoadIdentity();
 
-/*
-        if(escena.rotacionX) //Eje X
-        {
-            if(x>escena.last_x) //Up
-                glRotated(escena.last_x+x*(escena.factorMovCam), 1, 0, 0);
-            else if(x<escena.last_x) //Down
-                glRotated(escena.last_x-x*(escena.factorMovCam), 1, 0, 0);
+        float rotacion_Z = (y - escena.last_y) - (x - escena.last_x);
+        escena.rotacionZ += rotacion_Z;
 
-            glGetFloatv(GL_MODELVIEW_MATRIX, rot);
-        }
-        */
-        if(escena.rotacionY) //Eje Y
-        {
-            if(y>escena.last_y) //Up
-                glRotated(escena.last_y+y*(escena.factorMovCam/5.0), 0, 1, 0);
-            else if(y<escena.last_y)//Down
-                glRotated(escena.last_y-y*(escena.factorMovCam/5.0), 0, 1, 0);
+        glRotated(escena.rotacionZ * escena.factorMovCam, 0, 0, 1);
 
-            glGetFloatv(GL_MODELVIEW_MATRIX, rot);
-        }
-        /*
-        else if(escena.rotacionZ) //Eje Z
-        {
-            if(y>escena.last_y) //Up
-                glRotated(escena.last_y+y*(escena.factorMovCam/5.0), 0, 0, 1);
-            else if(y<escena.last_y) //Down
-                glRotated(escena.last_y-y*(escena.factorMovCam/5.0), 0, 0, 1);
-
-            glGetFloatv(GL_MODELVIEW_MATRIX, rot);
-        }*/
+        glGetFloatv(GL_MODELVIEW_MATRIX, rot);
 
         for(int i=0; i<16; i++)
-            if(escena.view_rotate[i]!=rot[i])
-                    escena.view_rotate[i]=rot[i];
+            if(escena.view_rotate[i] != rot[i])
+                escena.view_rotate[i]=rot[i];
 
         glPopMatrix();
     }
+    else if(escena.raton==5)
+    {
+        if(y < escena.last_y)
+            escena.scale+=escena.factorMovCam*0.05;
+        else if(y > escena.last_y)
+            escena.scale-=escena.factorMovCam*0.05;
+    }
+
 
     escena.last_x=x;
     escena.last_y=y;
@@ -1911,14 +2045,19 @@ void __fastcall TGui::Motion(int x, int y )
 void __fastcall TGui::Mouse(int button, int button_state, int x, int y )
 {
     //Si no estamos en vista aerea ni seguimiento, accionamos ratón
-    if(button_state==GLUT_DOWN && escena.vistaAerea==0 && escena.camaraSeguimiento == 0)
+    if(button_state==GLUT_DOWN && escena.vistaAerea==0 && escena.camaraSeguimiento == 0 && escena.primeraPersona == 0)
 	{
-		if(button==GLUT_LEFT_BUTTON) //Izq pulsado
+        //glutGetModifiers() devuelve GLUT_ACTIVE_CTRL, GLUT_ACTIVE_SHIFT, y GLUT_ACTIVE_ALT
+		if(button==GLUT_LEFT_BUTTON && glutGetModifiers()!=GLUT_ACTIVE_CTRL && glutGetModifiers()!=GLUT_ACTIVE_SHIFT)
 			escena.raton = 1;
-		else if(button==GLUT_MIDDLE_BUTTON) //Rueda pulsada
-			escena.raton=2;
-		else if(button == GLUT_RIGHT_BUTTON) //Der pulsado
+        else if(button == GLUT_LEFT_BUTTON && glutGetModifiers()==GLUT_ACTIVE_CTRL)
+            escena.raton = 2;
+		else if(button == GLUT_RIGHT_BUTTON && glutGetModifiers()!=GLUT_ACTIVE_CTRL)
 			escena.raton=3;
+        else if(button == GLUT_RIGHT_BUTTON && glutGetModifiers()==GLUT_ACTIVE_CTRL)
+            escena.raton=4;
+        else if(button == GLUT_LEFT_BUTTON && glutGetModifiers()==GLUT_ACTIVE_SHIFT)
+            escena.raton=5;
 
         escena.last_x=x;
         escena.last_y=y;
@@ -1926,7 +2065,7 @@ void __fastcall TGui::Mouse(int button, int button_state, int x, int y )
 	else if(button_state==GLUT_UP) //Liberar tecla
 	{
 	    escena.raton=0;
-	    if(button==GLUT_LEFT_BUTTON && escena.vistaAerea==0 && escena.camaraSeguimiento == 0)
+	    if(button==GLUT_LEFT_BUTTON && escena.vistaAerea==0 && escena.camaraSeguimiento == 0 && escena.primeraPersona == 0)
 			escena.Pick3D(x, y);
 	}
 }
