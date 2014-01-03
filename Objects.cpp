@@ -48,18 +48,18 @@ float view_rotate_c[16] = { 1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1 };
 float view_position_c[3] = { 0.0, -2.0, -25.0 };
 
 //Materiales
-GLfloat sinMaterial[] = { 0.0, 0.0, 0.0, 1.0 };
+GLfloat materialNulo[] = { 0.0, 0.0, 0.0, 1.0 };
 GLfloat ambMedio[] = { 0.7, 0.7, 0.7, 1.0 };
 GLfloat ambMarron[] = { 0.8, 0.8, 0.2, 1.0 };
 GLfloat dif[] = { 0.7, 0.7, 0.7, 1.0 };
 GLfloat espMedio[] = { 0.5, 0.5, 0.5, 1.0 };
 GLfloat esp[] = { 1.0, 1.0, 1.0, 1.0 };
-GLfloat noBrillo[] = { 0.0 };
-GLfloat bajoBrillo[] = { 12.0 };
-GLfloat medioBrillo[] = { 50.0 };
-GLfloat altoBrillo[] = { 100.0 };
+GLfloat noResplandor[] = { 0.0 };
+GLfloat bajoResplandor[] = { 12.0 };
+GLfloat medioResplandor[] = { 50.0 };
+GLfloat altoResplandor[] = { 100.0 };
 
-GLfloat emision[] = {1.0, 1.0, 1.0, 0.9};
+GLfloat matEmision[] = {1.0, 1.0, 1.0, 0.9};
 
 
 //CREAR MATERIALES PARA EL COCHE
@@ -657,11 +657,11 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
         case SUELO_ID: {
 
             glPushMatrix();
-            glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
-            glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
-            glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
-            glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+            glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
 
             if(escena.textura)
             {
@@ -693,11 +693,11 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             if (escena.show_road)
             {
                 glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_SHININESS, bajoBrillo);
-                glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+                glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SHININESS, bajoResplandor);
+                glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
 
                 if(reflejo)
                 {
@@ -784,11 +784,11 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             if (escena.show_wheels)
             {
                 glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
-                glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+                glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+                glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
                 glColor4fv(colores_c[1]);
                 glPushMatrix();                     //Rueda 0 DEL, DER
                     glTranslated(-1.18, 0.49, 4.04);
@@ -833,11 +833,11 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 {
                     glPushMatrix();
                     glTranslated(0, -0.17, 1.27);
-                    glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
-                    glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
-                    glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
-                    glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
-                    glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+                    glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+                    glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+                    glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+                    glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+                    glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
 
                     glColor4f(0.03,0.18,1.0,0.6);
                     glCallList(ID+MARCADOR);
@@ -845,7 +845,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
                 }
 
                 glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
                 glMaterialfv(GL_FRONT, GL_DIFFUSE, difCoche);
 
                 float v[] = { espCoche[0], espCoche[1],
@@ -857,7 +857,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
 
                 glMaterialfv(GL_FRONT, GL_SPECULAR, v);
                 glMaterialfv(GL_FRONT, GL_SHININESS, lumCoche);
-                glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+                glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
 
                 glColor4fv(colores_c[0]);
                 glLoadName(ID);
@@ -887,11 +887,11 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             if (escena.show_farola_base)
             {
                 glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
                 glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
                 glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
-                glMaterialfv(GL_FRONT, GL_SHININESS, medioBrillo);
-                glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+                glMaterialfv(GL_FRONT, GL_SHININESS, medioResplandor);
+                glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
                 glColor4fv(colores_farola[0]);
                 glLoadName(0);
                 glCallList(ID+FAROLA_BASE);
@@ -900,22 +900,22 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             if (escena.show_farola_capucha)
             {
                 glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_SHININESS, bajoBrillo);
-                glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+                glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SHININESS, bajoResplandor);
+                glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
                 glColor4fv(colores_farola[1]);
                 glLoadName(0);
                 glCallList(ID+FAROLA_CAPUCHA);
 
                 glEnable(GL_BLEND);
                 glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
                 glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
                 glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
-                glMaterialfv(GL_FRONT, GL_SHININESS, medioBrillo);
-                glMaterialfv(GL_FRONT, GL_EMISSION, emision);
+                glMaterialfv(GL_FRONT, GL_SHININESS, medioResplandor);
+                glMaterialfv(GL_FRONT, GL_EMISSION, matEmision);
                 glColor4fv(colores_farola[2]);
                 glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
                 glLoadName(0);
@@ -941,11 +941,11 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             {
 
                 glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
-                glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
-                glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+                glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+                glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
 
                 if(escena.textura)
                 {
@@ -1028,11 +1028,11 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             glRotated(rz, 0, 0, 1);
 
             glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-            glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
-            glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
-            glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
-            glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+            glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
 
             if(escena.textura)
             {
@@ -1061,11 +1061,11 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             glRotated(rz, 0, 0, 1);
 
             glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-            glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, sinMaterial);
-            glMaterialfv(GL_FRONT, GL_SPECULAR, sinMaterial);
-            glMaterialfv(GL_FRONT, GL_SHININESS, noBrillo);
-            glMaterialfv(GL_FRONT, GL_EMISSION, sinMaterial);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+            glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
 
             if(escena.textura)
             {
@@ -1320,17 +1320,14 @@ void __fastcall TEscena::Render()
 //*********************************CAMARA SEGUIMIENTO
     if(escena.camaraSeguimiento==1)
     {
-        //Obtenemos el coche
         TPrimitiva *cam = NULL;
-        cam = GetCar(seleccion);
-
-        //Situamos camara detrás del coche
-        if(cam)
+        cam = GetCar(seleccion);   //Obtenemos el coche
+        
+        if(cam)     //Situamos camara detrás del coche
         {
             float angulo = (cam->ry*PI)/180.0;
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
-            //PosCamX,PosCamY,PosCamZ,  DondeMiraX,DondeMiraY,DondeMiraZ,   0,1,0(direccion arriba camara)
             gluLookAt(cam->tx-20*sin(angulo),cam->ty+10,cam->tz-20*cos(angulo),cam->tx,cam->ty+5,cam->tz,0,1,0);
         }
     }
@@ -1370,44 +1367,49 @@ void __fastcall TEscena::Render()
 
     if(escena.reflejo)
     {
-        glColorMask(0,0,0,0);								// Set Color Mask
-        glEnable(GL_STENCIL_TEST);							// Enable Stencil Buffer For "marking" The Floor
-        glStencilFunc(GL_ALWAYS, 1, 1);						// Always Passes, 1 Bit Plane, 1 As Mask
-        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);			// We Set The Stencil Buffer To 1 Where We Draw Any Polygon
-                                                            // Keep If Test Fails, Keep If Test Passes But Buffer Test Fails
-                                                            // Replace If Test Passes
+        //Seteamos el Stencil Buffer a 0's para escribir en él
+        glColorMask(0,0,0,0);								
+        glEnable(GL_STENCIL_TEST);							
+        glStencilFunc(GL_ALWAYS, 1, 1);						
+        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);			
         glDisable(GL_DEPTH_TEST);
+
+        //Renderizamos el suelo para que se escriba en el Stencil Buffer
         RenderFloors(0);
 
-        glEnable(GL_DEPTH_TEST);                        // Enable Depth Testing
-        glColorMask(1,1,1,1);                           // Set Color Mask to TRUE, TRUE, TRUE, TRUE
-        glStencilFunc(GL_EQUAL, 1, 1);                      // We Draw Only Where The Stencil Is 1
-                                            // (I.E. Where The Floor Was Drawn)
-        glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);                 // Don't Change The Stencil Buffer
-        glEnable(GL_CLIP_PLANE0);
-        glClipPlane(GL_CLIP_PLANE0, eqr);					// Equation For Reflected Objects
+        //Cambiamos modo para poder escribir en el Stencil Buffer
+        glEnable(GL_DEPTH_TEST);                        
+        glColorMask(1,1,1,1);                           
+        glStencilFunc(GL_EQUAL, 1, 1);                      
+        glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP); 
 
-        glPushMatrix();										// Push The Matrix Onto The Stack
-            glScalef(1.0f, -1.0f, 1.0f);					// Mirror Y Axis
+        //Aplicamos plano de recortado definido por la ecuación eqr
+        glEnable(GL_CLIP_PLANE0);
+        glClipPlane(GL_CLIP_PLANE0, eqr);					
+
+        //Pintamos todos los objetos en forma de Espejo en Y (Semitransparentes)
+        glPushMatrix();										
+            glScalef(1.0f, -1.0f, 1.0f);					
             glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
             glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
             glLightfv(GL_LIGHT2, GL_POSITION, light2_position);
             glTranslated(0,-0.18,0);
             RenderCars(seleccion);
 			RenderObjects(seleccion);
-        glPopMatrix();									// Pop The Matrix Off The Stack
+        glPopMatrix();									
 
-        glDisable(GL_CLIP_PLANE0);							// Disable Clip Plane For Drawing The Floor
-        glDisable(GL_STENCIL_TEST);							// We Don't Need The Stencil Buffer Any More (Disable)
-        glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
-        glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
-        glLightfv(GL_LIGHT2, GL_POSITION, light2_position);
-
-        RenderFloors(1);										// Draw The Floor To The Screen
+        //Deshabilitamos plano de recortado y dibujamos suelo semitransparente
+        glDisable(GL_CLIP_PLANE0);							
+        glDisable(GL_STENCIL_TEST);							
+        RenderFloors(1);
 	}
     else
         RenderFloors(0);
 
+
+    glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+    glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
+    glLightfv(GL_LIGHT2, GL_POSITION, light2_position);
 
     RenderCars(seleccion);
     // Dibujar carretera y objetos
@@ -1728,10 +1730,10 @@ void __fastcall TGui::ControlCallback( int control )
     else
     {
         glClearColor(0.0, 0.0, 0.0, 1.0);
-        glLightfv(GL_LIGHT0, GL_AMBIENT, sinMaterial );
-        glLightfv(GL_LIGHT1, GL_AMBIENT, sinMaterial );
-        glLightfv(GL_LIGHT2, GL_AMBIENT, sinMaterial );
-        glMaterialfv(GL_FRONT, GL_AMBIENT, sinMaterial);
+        glLightfv(GL_LIGHT0, GL_AMBIENT, materialNulo );
+        glLightfv(GL_LIGHT1, GL_AMBIENT, materialNulo );
+        glLightfv(GL_LIGHT2, GL_AMBIENT, materialNulo );
+        glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
     }
 
 
@@ -1955,22 +1957,14 @@ void __fastcall TGui::Motion(int x, int y )
 {
     if(escena.raton==1) //MOVERSE CON RATON
     {
-
-        if(glutGetModifiers()==GLUT_ACTIVE_CTRL)
-        {
-
-        }
-        else
-        {
-            if(x > escena.last_x)           //Der
-                escena.view_position[0]+=escena.factorMovCam;
-            else if (x < escena.last_x)     //Izq
-                escena.view_position[0]-=escena.factorMovCam;
-            if(y > escena.last_y)           //Up
-                escena.view_position[1]-=escena.factorMovCam;
-            else if (y < escena.last_y)     //Down
-                escena.view_position[1]+=escena.factorMovCam;
-        }
+        if(x > escena.last_x)           //Der
+            escena.view_position[0]+=escena.factorMovCam;
+        else if (x < escena.last_x)     //Izq
+            escena.view_position[0]-=escena.factorMovCam;
+        if(y > escena.last_y)           //Up
+            escena.view_position[1]-=escena.factorMovCam;
+        else if (y < escena.last_y)     //Down
+            escena.view_position[1]+=escena.factorMovCam;
     }
     else if(escena.raton==2)  //MOVIMIENTO EN Z
     {

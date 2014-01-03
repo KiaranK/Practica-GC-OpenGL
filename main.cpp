@@ -58,29 +58,6 @@ void Keyboard(unsigned char Key, int x, int y)
             escena.tipoVista=0;
             gui.Reshape(x,y);//Perspectiva
             break;
-
-        //Teclas para la rotacion
-
-        case 'x':
-        case 'X':
-            escena.rotacionX=1;
-            escena.rotacionY=0;
-            escena.rotacionZ=0;
-        break;
-
-        case 'y':
-        case 'Y':
-            escena.rotacionX=0;
-            escena.rotacionY=1;
-            escena.rotacionZ=0;
-        break;
-
-        case 'z':
-        case 'Z':
-            escena.rotacionX=0;
-            escena.rotacionY=0;
-            escena.rotacionZ=1;
-        break;
     }
 
     glutPostRedisplay();
@@ -117,7 +94,6 @@ static void SpecialKey(int key, int x, int y)
         }
 
         glutPostRedisplay();
-
     }
 
 }
