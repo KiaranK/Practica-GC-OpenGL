@@ -2,12 +2,12 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="Objects.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="17713" topLine="514" />
+		<Cursor position="3726" topLine="78" />
 	</File>
 	<File name="Objects.h" open="1" top="0" tabpos="3">
-		<Cursor position="2052" topLine="63" />
+		<Cursor position="1517" topLine="39" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="2238" topLine="54" />
+		<Cursor position="13112" topLine="454" />
 	</File>
 </CodeBlocks_layout_file>
