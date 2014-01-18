@@ -2,7 +2,11 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
 	<File name="Objects.cpp" open="1" top="1" tabpos="2">
+<<<<<<< HEAD
 		<Cursor position="3726" topLine="78" />
+=======
+		<Cursor position="16891" topLine="514" />
+>>>>>>> e6d3d3105b5c4bd8fbda4d5c6491a29acbf0c869
 	</File>
 	<File name="Objects.h" open="1" top="0" tabpos="3">
 		<Cursor position="1517" topLine="39" />

@@ -133,6 +133,7 @@
 	<stdio.h>
 	<malloc.h>
 
+<<<<<<< HEAD
 1389991206 source:c:\gc_practica_open_gl\main.cpp
 	"Objects.h"
 	<GL\glui.h>
@@ -166,3 +167,5 @@
 
 1388093941 c:\gc_practica_open_gl\imageloader.h
 
+=======
+>>>>>>> e6d3d3105b5c4bd8fbda4d5c6491a29acbf0c869
