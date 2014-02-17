@@ -295,6 +295,7 @@ int main(int argc, char* argv[])
 	TPrimitiva *semaforo0 = new TPrimitiva(SEMAFORO_ID, SEMAFORO_ID);
 
 	TPrimitiva *piramide0 = new TPrimitiva(PIRAMIDE_ID, PIRAMIDE_ID);
+<<<<<<< HEAD
 	TPrimitiva *piramide1 = new TPrimitiva(PIRAMIDE_ID, PIRAMIDE_ID);
 	TPrimitiva *piramide2 = new TPrimitiva(PIRAMIDE_ID, PIRAMIDE_ID);
 
@@ -344,6 +345,26 @@ int main(int argc, char* argv[])
 
     piramide2->tx = 60;
     piramide2->tz = -10;
+=======
+
+	TPrimitiva *arbol0 = new TPrimitiva(ARBOL_ID, ARBOL_ID);
+
+	TPrimitiva *banco0 = new TPrimitiva(BANCO_ID, BANCO_ID);
+
+
+//POSICIONES
+    semaforo0->tx = 9;
+
+    arbol0->tx = -9;
+
+    banco0->tx = 9;
+    banco0->tz = 10;
+
+    piramide0->tx = -12;
+    piramide0->tz = 20;
+
+
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
 
     ladera_alta0->tx = 90;
     ladera_alta0->tz = -110;
@@ -532,8 +553,11 @@ int main(int argc, char* argv[])
     escena.AddFloor(carrCorta11);
     escena.AddFloor(carrCorta12);
     escena.AddFloor(carrCorta13);
+<<<<<<< HEAD
     escena.AddFloor(carrCorta14);
     escena.AddFloor(carrCorta15);
+=======
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
 
     escena.AddObject(casa0);
     escena.AddObject(casa1);
@@ -546,7 +570,13 @@ int main(int argc, char* argv[])
     escena.AddObject(casa8);
     escena.AddObject(casa9);
     escena.AddObject(casa10);
+<<<<<<< HEAD
     escena.AddObject(casa11);
+=======
+    escena.AddObject(casa11);
+    //escena.AddObject(casa12);
+    //escena.AddObject(casa13);
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
 
     escena.AddObject(farola0);
     escena.AddObject(farola1);
@@ -565,9 +595,15 @@ int main(int argc, char* argv[])
     escena.AddObject(ladera_alta1);
 
     escena.AddObject(piramide0);
+<<<<<<< HEAD
     escena.AddObject(piramide1);
     escena.AddObject(piramide2);
     escena.AddObject(semaforo0);
+=======
+    escena.AddObject(banco0);
+    escena.AddObject(semaforo0);
+    escena.AddObject(arbol0);
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
 
     escena.AddCar(car1);
     escena.ultimoSelec=COCHE_ID;

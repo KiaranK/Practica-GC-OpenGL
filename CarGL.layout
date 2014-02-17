@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
+<<<<<<< HEAD
 	<File name="Objects.cpp" open="1" top="0" tabpos="2">
 		<Cursor position="2607" topLine="55" />
 	</File>
@@ -9,5 +10,19 @@
 	</File>
 	<File name="main.cpp" open="1" top="1" tabpos="1">
 		<Cursor position="10958" topLine="295" />
+=======
+	<File name="Objects.cpp" open="1" top="1" tabpos="2">
+<<<<<<< HEAD
+		<Cursor position="3726" topLine="78" />
+=======
+		<Cursor position="16891" topLine="514" />
+>>>>>>> e6d3d3105b5c4bd8fbda4d5c6491a29acbf0c869
+	</File>
+	<File name="Objects.h" open="1" top="0" tabpos="3">
+		<Cursor position="1517" topLine="39" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="13112" topLine="454" />
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
 	</File>
 </CodeBlocks_layout_file>

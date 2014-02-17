@@ -66,6 +66,7 @@ GLfloat matEmision[] = {1.0, 1.0, 1.0, 0.9};
 GLfloat brilloCoche[] = {0.75 };
 GLfloat lumCoche[] = {25.0 };
 GLfloat difCoche[] = {0.7, 0.7, 0.7, 1.0};
+<<<<<<< HEAD
 GLfloat espCoche[] = {1.0, 1.0, 1.0, 1.0};
 
 float pos_arboles[8][2]={
@@ -78,6 +79,9 @@ float pos_arboles[8][2]={
                             {-9.0, 0.0},
                             {-9.0, -9.0}
                         };
+=======
+GLfloat espCoche[] = {1.0, 1.0, 1.0, 1.0};
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
 
 //Colores
 float color_suelo[4] = {0.15,1,0.15, 1};
@@ -933,7 +937,11 @@ TPrimitiva::TPrimitiva(int DL, int t)
 		/********************************************** ARBOL */
 		case ARBOL_ID: {
 
+<<<<<<< HEAD
             sx = sy = sz = 1.35;
+=======
+            sx = sy = sz = 1.25;
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
             rz=180;
 
             //************************ Cargar modelos ***********************************
@@ -1221,6 +1229,7 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             }
 
             glDisable(GL_BLEND);
+<<<<<<< HEAD
             glPopMatrix();
 
 
@@ -1482,6 +1491,407 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             glLoadName(0);
             glCallList(ID+2);
 
+=======
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
+            glPopMatrix();
+
+
+            break;
+<<<<<<< HEAD
+        }
+
+        /************************* ARBOL */
+        case ARBOL_ID: {
+=======
+        }
+
+
+        /************************* FAROLA */
+        case FAROLA_ID: {
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
+
+            glPushMatrix();
+
+            glScaled(sx,sy,sz);
+            glTranslated(tx, ty, tz);
+            glRotated(rx, 1, 0, 0);
+            glRotated(ry, 0, 1, 0);
+            glRotated(rz, 0, 0, 1);
+        //palo
+            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+            glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
+            if(escena.textura)
+            {
+<<<<<<< HEAD
+                glColor4fv(color_blanco);
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, texturas[8]);
+=======
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+                glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
+                glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
+                glMaterialfv(GL_FRONT, GL_SHININESS, medioResplandor);
+                glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
+                glColor4fv(colores_farola[0]);
+                glLoadName(0);
+                glCallList(ID+FAROLA_BASE);
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
+            }
+            else
+                glColor4fv(colores_arbol[0]);
+
+            glLoadName(0);
+            glCallList(ID);
+        //hojas
+            if(escena.textura)
+            {
+<<<<<<< HEAD
+                glColor4fv(color_blanco);
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, texturas[9]);
+=======
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+                glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SHININESS, bajoResplandor);
+                glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
+                glColor4fv(colores_farola[1]);
+                glLoadName(0);
+                glCallList(ID+FAROLA_CAPUCHA);
+
+                glEnable(GL_BLEND);
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+                glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
+                glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
+                glMaterialfv(GL_FRONT, GL_SHININESS, medioResplandor);
+                glMaterialfv(GL_FRONT, GL_EMISSION, matEmision);
+                glColor4fv(colores_farola[2]);
+                glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+                glLoadName(0);
+                glCallList(ID+FAROLA_CRISTAL);
+                glDisable(GL_BLEND);
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
+            }
+            else
+                glColor4fv(colores_arbol[1]);
+
+            glLoadName(0);
+            glCallList(ID+1);
+
+            glDisable(GL_TEXTURE_2D);
+            glPopMatrix();
+            break;
+        }
+
+        /************************* PIRAMIDE */
+        case PIRAMIDE_ID: {
+
+            glPushMatrix();
+
+            glScaled(sx,sy,sz);
+            glTranslated(tx, ty, tz);
+            glRotated(rx, 1, 0, 0);
+            glRotated(ry, 0, 1, 0);
+            glRotated(rz, 0, 0, 1);
+        //base
+            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+            glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
+            if(escena.textura)
+            {
+<<<<<<< HEAD
+                glColor4fv(color_blanco);
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, texturas[10]);
+            }
+            else
+                glColor4fv(colores_piramide[0]);
+
+            glLoadName(0);
+            glCallList(ID);
+
+        //palo
+            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
+            glMaterialfv(GL_FRONT, GL_SHININESS, medioResplandor);
+            glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
+            glColor4fv(colores_piramide[0]);
+            glLoadName(0);
+            glCallList(ID+1);
+        //bola
+            glEnable(GL_BLEND);
+            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, colores_piramide[1]);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
+            glColor4fv(colores_piramide[1]);
+            glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+            glLoadName(0);
+            glCallList(ID+2);
+            glDisable(GL_BLEND);
+
+            //palo
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+                glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+                glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
+
+            glPushMatrix();
+            glScaled(1.1,1.1,1.1);
+            glRotated(180.0, 0, 0, 1);
+        //Arboles
+            for(int i=0; i<8; i++)
+            {
+                glPushMatrix();
+                glTranslated(pos_arboles[i][0], 0, pos_arboles[i][1]);
+
+=======
+
+                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+                glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+                glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+                glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
+
+                if(escena.textura)
+                {
+                    glColor4fv(color_blanco);
+                    glEnable(GL_TEXTURE_2D);
+                    glBindTexture(GL_TEXTURE_2D, texturas[3]);
+                }
+                else
+                    glColor4fv(colores_casa[0]);
+
+                glLoadName(0);
+                glCallList(ID+CASA_BASE);
+                glDisable(GL_TEXTURE_2D);
+
+
+                if(escena.textura)
+                {
+                    glColor4fv(color_blanco);
+                    glEnable(GL_TEXTURE_2D);
+                    glBindTexture(GL_TEXTURE_2D, texturas[5]);
+                }
+                else
+                    glColor4fv(colores_casa[1]);
+
+                glLoadName(0);
+                glCallList(ID+CASA_TEJADO);
+                glDisable(GL_TEXTURE_2D);
+
+                if(escena.textura)
+                {
+                    glColor4fv(color_blanco);
+                    glEnable(GL_TEXTURE_2D);
+                    glBindTexture(GL_TEXTURE_2D, texturas[4]);
+                }
+                else
+                    glColor4fv(colores_casa[2]);
+
+                glLoadName(0);
+                glCallList(ID+CASA_VENTANAS);
+                glDisable(GL_TEXTURE_2D);
+
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
+                if(escena.textura)
+                {
+                    glColor4fv(color_blanco);
+                    glEnable(GL_TEXTURE_2D);
+<<<<<<< HEAD
+                    glBindTexture(GL_TEXTURE_2D, texturas[8]);
+                }
+                else
+                    glColor4fv(colores_arbol[0]);
+
+                glLoadName(0);
+                glCallList(ARBOL_ID);
+            //hojas
+=======
+                    glBindTexture(GL_TEXTURE_2D, texturas[4]);
+                }
+                else
+                    glColor4fv(colores_casa[2]);
+
+                glLoadName(0);
+                glCallList(ID+CASA_PUERTA);
+                glDisable(GL_TEXTURE_2D);
+
+
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
+                if(escena.textura)
+                {
+                    glColor4fv(color_blanco);
+                    glEnable(GL_TEXTURE_2D);
+<<<<<<< HEAD
+                    glBindTexture(GL_TEXTURE_2D, texturas[9]);
+                }
+                else
+                    glColor4fv(colores_arbol[1]);
+
+                glLoadName(0);
+                glCallList(ARBOL_ID+1);
+                glPopMatrix();
+            }
+            glPopMatrix();
+
+            glDisable(GL_TEXTURE_2D);
+=======
+                    glBindTexture(GL_TEXTURE_2D, texturas[6]);
+                }
+                else
+                    glColor4fv(colores_casa[3]);
+
+                glLoadName(0);
+                glCallList(ID+CASA_ENTRADA);
+                glDisable(GL_TEXTURE_2D);
+            }
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
+            glPopMatrix();
+            break;
+        }
+
+        //********************* BANCO
+        case BANCO_ID: {
+
+            glPushMatrix();
+<<<<<<< HEAD
+=======
+            glTranslated(tx, ty, tz);
+            glScaled(sx,sy,sz);
+            glRotated(rx, 1, 0, 0);
+            glRotated(ry, 0, 1, 0);
+            glRotated(rz, 0, 0, 1);
+
+            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+            glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
+
+            if(escena.textura)
+            {
+                glColor4fv(color_blanco);
+                glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, texturas[1]);
+            }
+            else
+                glColor4fv(color_suelo);
+
+            glLoadName(0); //No seleccionable
+            glCallList(ID);
+
+            glPopMatrix();
+            glDisable(GL_TEXTURE_2D);
+            break;
+        }
+
+        case LADERA_BAJA_ID: {
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
+
+            glScaled(sx,sy,sz);
+            glTranslated(tx, ty, tz);
+            glRotated(rx, 1, 0, 0);
+            glRotated(ry, 0, 1, 0);
+            glRotated(rz, 0, 0, 1);
+
+            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+<<<<<<< HEAD
+            glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
+=======
+            glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
+
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
+            if(escena.textura)
+            {
+                glColor4fv(color_blanco);
+                glEnable(GL_TEXTURE_2D);
+<<<<<<< HEAD
+                glBindTexture(GL_TEXTURE_2D, texturas[7]);
+            }
+            else
+                glColor4fv(colores_banco);
+=======
+                glBindTexture(GL_TEXTURE_2D, texturas[1]);
+            }
+            else
+                glColor4fv(color_suelo);
+
+            glLoadName(0); //No seleccionable
+            glCallList(ID);
+>>>>>>> 787514e29c3856a12eeb7ad9c973bf3c9735b82e
+
+            glLoadName(0);
+            glCallList(ID);
+
+            glDisable(GL_TEXTURE_2D);
+            glPopMatrix();
+            glDisable(GL_TEXTURE_2D);
+            break;
+        }
+
+        /************************* SEMAFORO */
+        case SEMAFORO_ID: {
+
+            glPushMatrix();
+
+            glScaled(sx,sy,sz);
+            glTranslated(tx, ty, tz);
+            glRotated(rx, 1, 0, 0);
+            glRotated(ry, 0, 1, 0);
+            glRotated(rz, 0, 0, 1);
+        //palo
+            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, dif);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, esp);
+            glMaterialfv(GL_FRONT, GL_SHININESS, medioResplandor);
+            glColor4fv(colores_semaforo[0]);
+            glLoadName(0);
+            glCallList(ID);
+        //cabeza
+            glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+            glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
+            glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
+            glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
+            glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
+            glColor4fv(colores_semaforo[1]);
+            glLoadName(0);
+            glCallList(ID+1);
+        //rojo
+            glColor4fv(colores_semaforo[2]);
+            glLoadName(0);
+            glCallList(ID+4);
+        //naranja
+            glColor4fv(colores_semaforo[3]);
+            glLoadName(0);
+            glCallList(ID+3);
+        //verde
+            glColor4fv(colores_semaforo[4]);
+            glLoadName(0);
+            glCallList(ID+2);
+
             glPopMatrix();
             break;
         }
@@ -1582,50 +1992,6 @@ void __fastcall TPrimitiva::Render(int seleccion, bool reflejo)
             glLoadName(0);
             glCallList(ID+2);
             glDisable(GL_BLEND);
-
-            //palo
-                glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
-                glMaterialfv(GL_FRONT, GL_AMBIENT, materialNulo);
-                glMaterialfv(GL_FRONT, GL_DIFFUSE, materialNulo);
-                glMaterialfv(GL_FRONT, GL_SPECULAR, materialNulo);
-                glMaterialfv(GL_FRONT, GL_SHININESS, noResplandor);
-                glMaterialfv(GL_FRONT, GL_EMISSION, materialNulo);
-
-            glPushMatrix();
-            glScaled(1.1,1.1,1.1);
-            glRotated(180.0, 0, 0, 1);
-        //Arboles
-            for(int i=0; i<8; i++)
-            {
-                glPushMatrix();
-                glTranslated(pos_arboles[i][0], 0, pos_arboles[i][1]);
-
-                if(escena.textura)
-                {
-                    glColor4fv(color_blanco);
-                    glEnable(GL_TEXTURE_2D);
-                    glBindTexture(GL_TEXTURE_2D, texturas[8]);
-                }
-                else
-                    glColor4fv(colores_arbol[0]);
-
-                glLoadName(0);
-                glCallList(ARBOL_ID);
-            //hojas
-                if(escena.textura)
-                {
-                    glColor4fv(color_blanco);
-                    glEnable(GL_TEXTURE_2D);
-                    glBindTexture(GL_TEXTURE_2D, texturas[9]);
-                }
-                else
-                    glColor4fv(colores_arbol[1]);
-
-                glLoadName(0);
-                glCallList(ARBOL_ID+1);
-                glPopMatrix();
-            }
-            glPopMatrix();
 
             glDisable(GL_TEXTURE_2D);
             glPopMatrix();
