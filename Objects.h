@@ -17,6 +17,12 @@
 
 #include <GL\glui.h>
 
+#define VEL 0.15
+#define PI  3.14159265358979
+#define COEF_ROZ    0.006
+#define DESLIZ_RUEDA    45
+
+
 // Identificadores internos de los objetos
 #define SUELO_ID        105
 #define CARRETERA_ID    110
@@ -31,7 +37,7 @@
 #define CASA_ENTRADA    4
 
 
-#define COCHE_ID	    100 // Un coche cada 100
+#define COCHE_ID	    99 // Un coche cada 100
 
 #define COCHE           0   //Estas variables se suman a coche, para así poder identificar varias partes de un objeto
 #define RUEDA	        1
@@ -48,19 +54,33 @@
 
 #define LADERA_ALTA_ID  135
 
+#define SEMAFORO_ID     140
+#define PIRAMIDE_ID     150
+#define BANCO_ID        155
+#define ARBOL_ID        160
+
 
 
 // IDs para los callbacks de TGui
 #define LIGHT0_ENABLED_ID    200
 #define LIGHT1_ENABLED_ID    201
+#define LIGHT2_ENABLED_ID    202
+#define LUZ_AMBIENTE_ENABLED_ID    203
 #define LIGHT0_INTENSITY_ID  250
 #define LIGHT1_INTENSITY_ID  260
+#define LIGHT2_INTENSITY_ID  270
 
 #define ENABLE_ID            300
 #define DISABLE_ID           301
 
 #define RESET_ID             400
 
+#define WIREFRAME_ID         410
+#define V_AEREA              411
+#define V_SEGUIMIENTO        412
+#define ZBUFFER_ID           413
+#define CULLING_ID           414
+#define V_PRIMERAPERSONA     415
 //************************************************************** Clase TPrimtiva
 
 class TPrimitiva
@@ -95,15 +115,23 @@ public: // Atributos
 		int   	seleccion;   	// Objeto seleccionado, 0=ninguno
         int		num_objects;    // Número de objetos (excepto coches)
         int     num_cars;       // Número de coches
+        int     num_floors;       // Número de coches
 
         TPrimitiva  *cars[10];
         TPrimitiva  *objects[150];
+        TPrimitiva  *floors[50];
 
         int sombra;
         int sentido;
-        int perspectiva;
         int luzAmbiente;
         int camaraSeguimiento;
+        int vistaAerea;
+        int primeraPersona;
+        float factorMovCam;
+        float cuantaLuzAmbiente;
+        int ultimoSelec;
+        int reflejo;
+        int tipoVista;
 
         //variables de estado
         int show_car;
@@ -112,7 +140,7 @@ public: // Atributos
 
         int show_farola_base;
         int show_farola_capucha;
-
+        int show_charco;
         int show_casa;
 
         GLfloat view_position[3];
@@ -129,6 +157,11 @@ public: // Atributos
         GLfloat light1_specular[4];
         GLfloat light1_position[4];
 
+        GLfloat light2_ambient[4];
+        GLfloat light2_diffuse[4];
+        GLfloat light2_specular[4];
+        GLfloat light2_position[4];
+
         GLfloat mat_ambient[4];
         GLfloat mat_diffuse[4];
         GLfloat mat_specular[4];
@@ -143,6 +176,7 @@ public: // Atributos
         int     wireframe;
         int     z_buffer;
         int     culling;
+        int     textura;
         float   scale;
 
 public: // Métodos
@@ -152,9 +186,11 @@ public: // Métodos
 		void __fastcall Render();
 		void __fastcall RenderCars(bool reflejo=false);
 		void __fastcall RenderObjects(bool reflejo=false);
+		void __fastcall RenderFloors(bool reflejo=false);
 
 		void __fastcall AddCar(TPrimitiva *car);
 		void __fastcall AddObject(TPrimitiva *object);
+		void __fastcall AddFloor(TPrimitiva *object);
 
 		TPrimitiva __fastcall *GetCar(int id);
 
@@ -172,14 +208,19 @@ public:
 
         // live variables usadas por GLUI
         int             enable_panel2;
+        int             luzAmbiente;
         int             light0_enabled;
         int             light1_enabled;
+        int             light2_enabled;
         float           light0_intensity;
         float           light1_intensity;
+        float           light2_intensity;
 
         GLUI            *glui, *glui2;
+        GLUI_Spinner    *luzAmbiente_spinner;
         GLUI_Spinner    *light0_spinner;
         GLUI_Spinner    *light1_spinner;
+        GLUI_Spinner    *light2_spinner;
         GLUI_RadioGroup *radio;
         GLUI_Panel      *obj_panel;
         GLUI_Rotation   *view_rot;
